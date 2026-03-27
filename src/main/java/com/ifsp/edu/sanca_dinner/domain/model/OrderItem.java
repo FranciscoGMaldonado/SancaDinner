@@ -6,13 +6,13 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class OrdemItem {
+public class OrderItem {
     private UUID id;
     private Product product;
     private String specification;
     private OrderStatus orderStatus;
 
-    public OrdemItem(UUID id, Product product, OrderStatus orderStatus, String specification) {
+    public OrderItem(UUID id, Product product, OrderStatus orderStatus, String specification) {
         setProduct(product);
         setSpecification(specification);
         this.orderStatus = OrderStatus.PENDING;
