@@ -24,7 +24,7 @@ public class OrderItem {
     }
 
     void validateSpecification(String specification){
-        if(specification == null || specification.isBlank()) throw new DomainException("A especificação não pode ser vazia ou nula.");
+        if(specification.isBlank()) throw new DomainException("A especificação não pode ser vazia.");
     }
 
     public void setProduct(Product product) {
