@@ -1,6 +1,6 @@
 package com.ifsp.edu.sanca_dinner.domain.model;
 
-public enum OrderStatus {
+public enum OrderItemStatus {
     PENDING,
     FINISHED,
     DELIVERED,

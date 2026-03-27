@@ -10,12 +10,12 @@ public class OrderItem {
     private UUID id;
     private Product product;
     private String specification;
-    private OrderStatus orderStatus;
+    private OrderItemStatus orderItemStatus;
 
-    public OrderItem(UUID id, Product product, OrderStatus orderStatus, String specification) {
+    public OrderItem(UUID id, Product product, OrderItemStatus orderItemStatus, String specification) {
         setProduct(product);
         setSpecification(specification);
-        this.orderStatus = OrderStatus.PENDING;
+        this.orderItemStatus = OrderItemStatus.PENDING;
         this.id = id;
     }
 
