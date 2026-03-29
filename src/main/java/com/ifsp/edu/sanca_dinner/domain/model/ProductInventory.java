@@ -2,7 +2,6 @@ package com.ifsp.edu.sanca_dinner.domain.model;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class ProductInventory {
