@@ -14,13 +14,13 @@ docker compose up -d
 Para acessar o banco e conseguir iniciar a conexão com o Postgres, é preciso criar um arquivo `.env` com os valores que serão usados na criação do banco. Disponibilizamos um arquivo `.env.example` no repositório para ser usado como referência:
 ```env
 POSTGRES_DB=sancadinner
-POSTGRES_USER=seu_usuario
-POSTGRES_PASSWORD=sua_senha
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
 ```
 
 Além disso, é necessário configurar o arquivo `application.properties` com os mesmos valores:
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/sancadinner
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
+spring.datasource.username=user
+spring.datasource.password=password
 ```
