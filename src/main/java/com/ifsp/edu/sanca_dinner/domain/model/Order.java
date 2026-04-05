@@ -49,4 +49,19 @@ public class Order {
         validateReview(review);
         this.review = review;
     }
+
+    public void addOrderItem(OrderItem newOrderItem){
+        if(newOrderItem == null) throw new DomainException("O item adicionado a comanda não pode ser nulo.");
+        orderItems.add(newOrderItem);
+    }
+
+    public void closeOrder(String review){
+        if(review != null && review.length() > 100) throw new DomainException("A review não pode ser superior a 100 caracteres.");
+        this.review = review;
+        this.orderStatus = OrderStatus.FINISHED;
+    }
+    public void removeOrderItem(UUID orderItemId){
+        if(orderItemId == null) throw new DomainException("O id do item não pode ser nulo ou vazio");
+        this.orderItems.removeIf(orderItem -> orderItem.getId() == orderItemId);
+    }
 }
