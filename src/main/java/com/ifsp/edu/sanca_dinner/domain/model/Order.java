@@ -30,10 +30,9 @@ public class Order {
 
     protected Order(){}
 
-    public Order(Integer id, String customerName, Integer tableNumber) {
+    public Order(String customerName, Integer tableNumber) {
         setCustomerName(customerName);
         setTableNumber(tableNumber);
-        this.id = id;
         this.orderStatus = OrderStatus.ACTIVE;
         this.orderItems = new ArrayList<>();
     }
