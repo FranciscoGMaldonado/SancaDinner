@@ -1,22 +1,34 @@
 package com.ifsp.edu.sanca_dinner.domain.model;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
+import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.util.UUID;
-
+@Entity
+@Table(name = "order_items")
 @Getter
 public class OrderItem {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product;
+
     private String specification;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private OrderItemStatus orderItemStatus;
 
-    public OrderItem(Integer id, Product product, OrderItemStatus orderItemStatus, String specification) {
+    protected OrderItem(){}
+
+    public OrderItem(Product product, String specification) {
         setProduct(product);
         setSpecification(specification);
         this.orderItemStatus = OrderItemStatus.PENDING;
-        this.id = id;
     }
 
     private void validateProduct(Product product){
