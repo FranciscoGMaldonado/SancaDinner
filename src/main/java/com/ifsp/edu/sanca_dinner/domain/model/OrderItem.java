@@ -19,11 +19,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    void validateProduct(Product product){
+    private void validateProduct(Product product){
         if(product == null) throw new DomainException("O produto do item não pode ser nulo.");
     }
 
-    void validateSpecification(String specification){
+    private void validateSpecification(String specification){
         if(specification.isBlank()) throw new DomainException("A especificação não pode ser vazia.");
     }
 
