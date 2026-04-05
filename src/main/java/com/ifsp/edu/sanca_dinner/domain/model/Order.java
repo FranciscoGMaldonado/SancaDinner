@@ -10,14 +10,14 @@ import java.util.UUID;
 public class Order {
     private UUID id;
     private String customer;
-    private Integer tableId;
+    private Integer tableNumber;
     private String review;
     private ArrayList<OrderItem> orderItems;
     private OrderStatus orderStatus;
 
-    public Order(UUID id, String customer, Integer tableId) {
+    public Order(UUID id, String customer, Integer tableNumber) {
         setCustomer(customer);
-        setTableId(tableId);
+        setTableNumber(tableNumber);
         this.id = id;
         this.orderStatus = OrderStatus.ACTIVE;
         this.orderItems = new ArrayList<>();
@@ -27,8 +27,8 @@ public class Order {
         if(customer == null || customer.isBlank()) throw new DomainException("O nome do cliente não pode ser vazio ou nulo.");
     }
 
-    private void validateTableId(Integer tableId){
-        if(tableId == null || tableId < 0) throw new DomainException("O número da mesa não pode ser nulo ou menor que zero.");
+    private void validateTableNumber(Integer tableNumber){
+        if(tableNumber == null || tableNumber < 0) throw new DomainException("O número da mesa não pode ser nulo ou menor que zero.");
     }
 
     private void validateReview(String review){
@@ -40,9 +40,9 @@ public class Order {
         this.customer = customer;
     }
 
-    public void setTableId(Integer tableId) {
-        validateTableId(tableId);
-        this.tableId = tableId;
+    public void setTableNumber(Integer tableNumber) {
+        validateTableNumber(tableNumber);
+        this.tableNumber = tableNumber;
     }
 
     public void setReview(String review) {
