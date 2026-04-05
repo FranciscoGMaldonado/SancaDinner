@@ -7,12 +7,12 @@ import java.util.UUID;
 
 @Getter
 public class OrderItem {
-    private UUID id;
+    private Integer id;
     private Product product;
     private String specification;
     private OrderItemStatus orderItemStatus;
 
-    public OrderItem(UUID id, Product product, OrderItemStatus orderItemStatus, String specification) {
+    public OrderItem(Integer id, Product product, OrderItemStatus orderItemStatus, String specification) {
         setProduct(product);
         setSpecification(specification);
         this.orderItemStatus = OrderItemStatus.PENDING;
