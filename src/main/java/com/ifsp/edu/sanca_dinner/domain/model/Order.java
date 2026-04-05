@@ -1,30 +1,45 @@
 package com.ifsp.edu.sanca_dinner.domain.model;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
+@Entity
+@Table(name = "orders")
 @Getter
 public class Order {
-    private UUID id;
-    private String customer;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String customerName;
+
     private Integer tableNumber;
+
     private String review;
-    private ArrayList<OrderItem> orderItems;
+
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    public Order(UUID id, String customer, Integer tableNumber) {
-        setCustomer(customer);
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "order_id")
+    private ArrayList<OrderItem> orderItems;
+
+    protected Order(){}
+
+    public Order(Integer id, String customerName, Integer tableNumber) {
+        setCustomerName(customerName);
         setTableNumber(tableNumber);
         this.id = id;
         this.orderStatus = OrderStatus.ACTIVE;
         this.orderItems = new ArrayList<>();
     }
 
-    private void validateCustomer(String customer){
-        if(customer == null || customer.isBlank()) throw new DomainException("O nome do cliente não pode ser vazio ou nulo.");
+    private void validateCustomerName(String customerName){
+        if(customerName == null || customerName.isBlank()) throw new DomainException("O nome do cliente não pode ser vazio ou nulo.");
     }
 
     private void validateTableNumber(Integer tableNumber){
@@ -35,9 +50,9 @@ public class Order {
         if(review == null || review.isBlank()) throw new DomainException("A review não pode ser vaiza ou nula.");
     }
 
-    public void setCustomer(String customer) {
-        validateCustomer(customer);
-        this.customer = customer;
+    public void setCustomerName(String customerName) {
+        validateCustomerName(customerName);
+        this.customerName = customerName;
     }
 
     public void setTableNumber(Integer tableNumber) {
@@ -59,9 +74,5 @@ public class Order {
         if(review != null && review.length() > 100) throw new DomainException("A review não pode ser superior a 100 caracteres.");
         this.review = review;
         this.orderStatus = OrderStatus.FINISHED;
-    }
-    public void removeOrderItem(UUID orderItemId){
-        if(orderItemId == null) throw new DomainException("O id do item não pode ser nulo ou vazio");
-        this.orderItems.removeIf(orderItem -> orderItem.getId() == orderItemId);
     }
 }
