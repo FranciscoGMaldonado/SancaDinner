@@ -27,6 +27,7 @@ CREATE TABLE order_items (
     id            INTEGER   GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     order_id      INTEGER   NOT NULL,
     product_id    INTEGER   NOT NULL,
+    product_price NUMERIC(10,2) NOT NULL,
     specification TEXT,
     status        TEXT      NOT NULL,
     quantity      INTEGER   NOT NULL,
