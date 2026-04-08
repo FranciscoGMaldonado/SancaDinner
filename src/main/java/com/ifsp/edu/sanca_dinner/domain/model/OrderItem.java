@@ -58,4 +58,8 @@ public class OrderItem {
         validatePrice(productPrice);
         this.productPrice = productPrice;
     }
+
+    public void setOrderItemStatus(OrderItemStatus orderItemStatus) {
+        this.orderItemStatus = orderItemStatus;
+    }
 }
