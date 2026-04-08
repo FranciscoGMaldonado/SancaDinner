@@ -4,6 +4,8 @@ import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_items")
 @Getter
@@ -14,7 +16,7 @@ public class OrderItem {
     private Integer id;
 
     private Integer productId;
-
+    private BigDecimal productPrice;
     private String specification;
 
     @Enumerated(EnumType.STRING)
@@ -23,9 +25,10 @@ public class OrderItem {
 
     protected OrderItem(){}
 
-    public OrderItem(Integer productid, String specification) {
+    public OrderItem(Integer productid, String specification, BigDecimal productPrice) {
         setProductId(productid);
         setSpecification(specification);
+        setProductPrice(productPrice);
         this.orderItemStatus = OrderItemStatus.PENDING;
     }
 
@@ -37,6 +40,10 @@ public class OrderItem {
         if(specification != null && specification.isBlank()) throw new DomainException("A especificação não pode ser vazia.");
     }
 
+    private void validatePrice(BigDecimal productPrice){
+        if(productPrice == null || productPrice.compareTo(BigDecimal.ZERO) <= 0) throw new DomainException("O preço do produto não pode ser menor ou igual a zero, ou nulo.");
+    }
+
     public void setProductId(Integer productId) {
         validateProductId(productId);
         this.productId = productId;
@@ -45,5 +52,10 @@ public class OrderItem {
     public void setSpecification(String specification) {
         validateSpecification(specification);
         this.specification = specification;
+    }
+
+    public void setProductPrice(BigDecimal productPrice) {
+        validatePrice(productPrice);
+        this.productPrice = productPrice;
     }
 }
