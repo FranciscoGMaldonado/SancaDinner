@@ -9,7 +9,6 @@ CREATE TABLE products (
     id          INTEGER       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name        TEXT          NOT NULL,
     price       NUMERIC(10,2) NOT NULL,
-    quantity    INTEGER       NOT NULL,
     description TEXT          NOT NULL
 );
 
