@@ -13,9 +13,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    private Integer productId;
 
     private String specification;
 
@@ -25,23 +23,23 @@ public class OrderItem {
 
     protected OrderItem(){}
 
-    public OrderItem(Product product, String specification) {
-        setProduct(product);
+    public OrderItem(Integer productid, String specification) {
+        setProductId(productid);
         setSpecification(specification);
         this.orderItemStatus = OrderItemStatus.PENDING;
     }
 
-    private void validateProduct(Product product){
-        if(product == null) throw new DomainException("O produto do item não pode ser nulo.");
+    private void validateProductId(Integer productId){
+        if(productId == null || productId <= 0) throw new DomainException("O ID do produto do item não pode ser nulo ou negativo.");
     }
 
     private void validateSpecification(String specification){
-        if(specification.isBlank()) throw new DomainException("A especificação não pode ser vazia.");
+        if(specification != null && specification.isBlank()) throw new DomainException("A especificação não pode ser vazia.");
     }
 
-    public void setProduct(Product product) {
-        validateProduct(product);
-        this.product = product;
+    public void setProductId(Integer productId) {
+        validateProductId(productId);
+        this.productId = productId;
     }
 
     public void setSpecification(String specification) {
