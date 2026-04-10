@@ -1,14 +1,19 @@
 package com.ifsp.edu.sanca_dinner.domain.model;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-import java.util.UUID;
-
+@Entity
+@Table(name="users")
 @Getter
 public class User {
-    private UUID id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String name;
     private String email;
     private UserRoles role;
@@ -16,8 +21,7 @@ public class User {
     @Getter(AccessLevel.NONE)
     private String password;
 
-    public User(UUID id, String name, String email, String password, UserRoles role) {
-        this.id = id;
+    public User(String name, String email, String password, UserRoles role) {
         setName(name);
         setEmail(email);
         setPassword(password);
