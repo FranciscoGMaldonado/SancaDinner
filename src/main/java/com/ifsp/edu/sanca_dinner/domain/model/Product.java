@@ -1,13 +1,19 @@
 package com.ifsp.edu.sanca_dinner.domain.model;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
+import jakarta.persistence.*;
 import lombok.Getter;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "products")
 @Getter
 public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
     private BigDecimal price;
     private String description;
