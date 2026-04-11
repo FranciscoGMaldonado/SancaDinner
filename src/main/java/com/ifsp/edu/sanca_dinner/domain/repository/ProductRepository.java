@@ -1,6 +1,6 @@
 package com.ifsp.edu.sanca_dinner.domain.repository;
 
-import com.ifsp.edu.sanca_dinner.domain.model.Product;
+import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 
 import java.util.List;
 import java.util.Optional;

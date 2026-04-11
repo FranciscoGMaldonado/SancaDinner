@@ -1,6 +1,7 @@
-package com.ifsp.edu.sanca_dinner.domain.model;
+package com.ifsp.edu.sanca_dinner.domain.model.order;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
+import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItem;
 import jakarta.persistence.*;
 import lombok.Getter;
 

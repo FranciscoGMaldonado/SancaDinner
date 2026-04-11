@@ -1,6 +1,6 @@
 package com.ifsp.edu.sanca_dinner.domain.service;
 
-import com.ifsp.edu.sanca_dinner.domain.model.Product;
+import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 

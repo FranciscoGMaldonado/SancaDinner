@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.domain.model;
+package com.ifsp.edu.sanca_dinner.domain.model.order_item;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import jakarta.persistence.*;

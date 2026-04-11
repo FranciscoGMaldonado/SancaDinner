@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.domain.model;
+package com.ifsp.edu.sanca_dinner.domain.model.user;
 
 public enum UserRoles {
     ADMIN,
