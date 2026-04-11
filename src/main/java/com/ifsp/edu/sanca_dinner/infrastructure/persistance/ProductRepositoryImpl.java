@@ -29,4 +29,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         return jpaRepository.findAll();
     }
 
+    @Override
+    public void deleteById(Integer id) {
+        jpaRepository.deleteById(id);
+    }
+
 }

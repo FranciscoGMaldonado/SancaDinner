@@ -10,5 +10,6 @@ public interface ProductRepository {
     Optional<Product> findById(Integer id);
     Product save(Product product);
     List<Product> findAll();
+    void deleteById(Integer id);
 
 }
