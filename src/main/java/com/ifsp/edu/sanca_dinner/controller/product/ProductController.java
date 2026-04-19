@@ -33,7 +33,14 @@ public class ProductController {
         var response = products.stream()
                 .map(productMapper::productToResponse)
                 .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse> getById(@PathVariable Integer productId){
+        var product = productService.findProductById(productId);
+        var response = productMapper.productToResponse(product);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
