@@ -1,15 +1,16 @@
 package com.ifsp.edu.sanca_dinner.controller.product;
 
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
+import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
@@ -17,11 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private ProductService productService;
+    private ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody CreateProductRequest request){
+    public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
         var newProduct = productService.addProduct(request.name(), request.price(), request.description());
-        return  ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
+        var response = productMapper.productToResponse(newProduct);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAll(){
+        var products = productService.getAllProducts();
+        var response = products.stream()
+                .map(productMapper::productToResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.FOUND).body(response);
     }
 
 }
