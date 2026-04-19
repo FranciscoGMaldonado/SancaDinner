@@ -1,5 +1,6 @@
 CREATE TABLE users (
     id       INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name     TEXT    NOT NULL,
     email    TEXT    NOT NULL,
     password TEXT    NOT NULL,
     role     TEXT    NOT NULL
