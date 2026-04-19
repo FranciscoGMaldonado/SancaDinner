@@ -21,6 +21,8 @@ public class User {
     @Getter(AccessLevel.NONE)
     private String password;
 
+    protected User(){}
+
     public User(String name, String email, String password, UserRoles role) {
         setName(name);
         setEmail(email);
