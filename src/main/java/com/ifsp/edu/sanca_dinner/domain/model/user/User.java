@@ -2,7 +2,6 @@ package com.ifsp.edu.sanca_dinner.domain.model.user;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 
 @Entity
@@ -16,9 +15,10 @@ public class User {
 
     private String name;
     private String email;
+
+    @Enumerated(EnumType.STRING)
     private UserRoles role;
 
-    @Getter(AccessLevel.NONE)
     private String password;
 
     protected User(){}

@@ -18,4 +18,10 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(Integer id) { return jpaRepository.findById(id); }
+
+    @Override
+    public Optional<User> findByEmail(String email) { return jpaRepository.findByEmail(email); }
+
+    @Override
+    public boolean existsByEmail(String email) { return jpaRepository.existsByEmail(email); }
 }
