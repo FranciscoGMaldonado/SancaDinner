@@ -1,5 +1,6 @@
 package com.ifsp.edu.sanca_dinner.domain.service;
 
+import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ public class ProductService {
         return productRepository.save(newProduct);
     }
 
-    public Optional<Product> findProductById(Integer id){
-        return productRepository.findById(id);
+    public Product findProductById(Integer id){
+        Product product = productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
+        return product;
     }
 
     public Product changeProduct(Integer id,String name, BigDecimal price, String description){
