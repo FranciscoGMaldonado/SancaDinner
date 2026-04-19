@@ -38,6 +38,7 @@ public class ProductService {
     }
 
     public void deleteProductById(Integer id){
+        productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
         productRepository.deleteById(id);
     }
 }
