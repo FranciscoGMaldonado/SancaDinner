@@ -25,10 +25,11 @@ public class ProductService {
     }
 
     public Product changeProduct(Integer id,String name, BigDecimal price, String description){
-        Product product = productRepository.findById(id).orElseThrow();
-        product.setName(name);
-        product.setPrice(price);
-        product.setDescription(description);
+        Product product = productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
+
+        if(name != null) product.setName(name);
+        if(price != null) product.setPrice(price);
+        if(description != null) product.setDescription(description);
         return productRepository.save(product);
     }
 
