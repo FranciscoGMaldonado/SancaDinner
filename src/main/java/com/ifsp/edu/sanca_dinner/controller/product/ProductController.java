@@ -1,6 +1,7 @@
 package com.ifsp.edu.sanca_dinner.controller.product;
 
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
+import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.service.ProductService;
@@ -40,6 +41,13 @@ public class ProductController {
     public ResponseEntity<ProductResponse> getById(@PathVariable Integer productId){
         var product = productService.findProductById(productId);
         var response = productMapper.productToResponse(product);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PutMapping
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest request){
+        var updatedProduct = productService.changeProduct(request.productId(),request.name(),request.price(),request.description());
+        var response = productMapper.productToResponse(updatedProduct);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
