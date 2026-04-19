@@ -1,7 +1,7 @@
 package com.ifsp.edu.sanca_dinner.infrastructure.persistance;
 
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
-import com.ifsp.edu.sanca_dinner.domain.repository.ProductRepository;
+import com.ifsp.edu.sanca_dinner.domain.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

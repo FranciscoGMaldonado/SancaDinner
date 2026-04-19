@@ -1,12 +1,12 @@
-package com.ifsp.edu.sanca_dinner.domain.service;
+package com.ifsp.edu.sanca_dinner.domain.service.product;
 
+import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
-import com.ifsp.edu.sanca_dinner.domain.repository.ProductRepository;
+import com.ifsp.edu.sanca_dinner.domain.repository.product.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,15 +18,17 @@ public class ProductService {
         return productRepository.save(newProduct);
     }
 
-    public Optional<Product> findProductById(Integer id){
-        return productRepository.findById(id);
+    public Product findProductById(Integer id){
+        Product product = productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
+        return product;
     }
 
     public Product changeProduct(Integer id,String name, BigDecimal price, String description){
-        Product product = productRepository.findById(id).orElseThrow();
-        product.setName(name);
-        product.setPrice(price);
-        product.setDescription(description);
+        Product product = productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
+
+        if(name != null) product.setName(name);
+        if(price != null) product.setPrice(price);
+        if(description != null) product.setDescription(description);
         return productRepository.save(product);
     }
 
@@ -35,6 +37,7 @@ public class ProductService {
     }
 
     public void deleteProductById(Integer id){
+        productRepository.findById(id).orElseThrow(() -> new DomainException("Produto não encontrado."));
         productRepository.deleteById(id);
     }
 }
