@@ -3,12 +3,15 @@ package com.ifsp.edu.sanca_dinner.domain.service.product;
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.repository.product.ProductRepository;
+import lombok.AllArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
 
     private ProductRepository productRepository;

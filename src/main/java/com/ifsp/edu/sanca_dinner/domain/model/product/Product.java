@@ -3,11 +3,14 @@ package com.ifsp.edu.sanca_dinner.domain.model.product;
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
 @Getter
+@NoArgsConstructor
 public class Product {
 
     @Id
