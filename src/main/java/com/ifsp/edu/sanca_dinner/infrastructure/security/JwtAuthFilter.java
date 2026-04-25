@@ -1,6 +1,6 @@
 package com.ifsp.edu.sanca_dinner.infrastructure.security;
 
-import com.ifsp.edu.sanca_dinner.domain.service.JwtService;
+import com.ifsp.edu.sanca_dinner.domain.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.domain.service;
+package com.ifsp.edu.sanca_dinner.domain.service.auth;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import io.jsonwebtoken.Jwts;

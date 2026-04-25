@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.domain.repository;
+package com.ifsp.edu.sanca_dinner.domain.repository.user;
 
 import com.ifsp.edu.sanca_dinner.domain.model.user.User;
 

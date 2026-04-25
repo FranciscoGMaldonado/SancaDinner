@@ -1,7 +1,7 @@
 package com.ifsp.edu.sanca_dinner.infrastructure.persistance.user;
 
 import com.ifsp.edu.sanca_dinner.domain.model.user.User;
-import com.ifsp.edu.sanca_dinner.domain.repository.UserRepository;
+import com.ifsp.edu.sanca_dinner.domain.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

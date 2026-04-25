@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.infrastructure.persistance;
+package com.ifsp.edu.sanca_dinner.infrastructure.persistance.product;
 
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
 import com.ifsp.edu.sanca_dinner.domain.repository.product.ProductRepository;

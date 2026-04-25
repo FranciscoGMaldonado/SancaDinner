@@ -4,7 +4,7 @@ import com.ifsp.edu.sanca_dinner.controller.user.response.AuthResponse;
 import com.ifsp.edu.sanca_dinner.controller.user.request.LoginRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.request.RegisterRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.response.RegisterResponse;
-import com.ifsp.edu.sanca_dinner.domain.service.AuthService;
+import com.ifsp.edu.sanca_dinner.domain.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
