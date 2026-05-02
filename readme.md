@@ -9,16 +9,23 @@ Para subir os containers referentes ao projeto, é necessário realizar os segui
 1. Realizar o build da aplicação. Para isso, na raiz do repositório, rode:
 
 ```bash
-docker build -t backend . 
+docker build -t backend ./backend/.
+docker build -t frontend ./frontend/.
 ```
 
-2. Depois, deve-se criar um arquivo `.env` na raiz com as variáveis usadas pelos serviços. 
+2. Também, deve rodar esse comando no diretório do `frontend`:
+
+```bash
+flutter pub get
+```
+
+3. Depois, deve-se criar um arquivo `.env` no diretório do `backend` com as variáveis usadas pelos serviços. 
    - Possuímos o [.env.example](.env.example) com valores mock para serem usados localmente.
    - Para o valor `JWT_SECRET`, será necessário criar um valor em `Base64` de pelo menos 32 caracteres. Pode ser feito pelo terminal usando:
      - Windows: `[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))`.
      - Linux/Mac: `openssl rand -base64 32`.
 
-3. Por fim, para iniciar os containers, rode:
+4. Por fim, para iniciar os containers, rode:
 
 ```bash
 docker compose up -d
