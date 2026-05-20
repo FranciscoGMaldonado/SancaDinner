@@ -1,10 +1,7 @@
 package com.ifsp.edu.sanca_dinner.controller.product;
 
 import com.ifsp.edu.sanca_dinner.application.product.mapper.ProductMapper;
-import com.ifsp.edu.sanca_dinner.application.product.use_cases.CreateProductUseCase;
-import com.ifsp.edu.sanca_dinner.application.product.use_cases.GetAllProductsUseCase;
-import com.ifsp.edu.sanca_dinner.application.product.use_cases.GetProductByIdUseCase;
-import com.ifsp.edu.sanca_dinner.application.product.use_cases.UpdateProductUseCase;
+import com.ifsp.edu.sanca_dinner.application.product.use_cases.*;
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
@@ -28,6 +25,7 @@ public class ProductController {
     private GetAllProductsUseCase getAllProductsUseCase;
     private GetProductByIdUseCase getProductByIdUseCase;
     private UpdateProductUseCase updateProductUseCase;
+    private DeleteProductUseCase deleteProductUseCase;
 
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
@@ -51,7 +49,7 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Integer productId){
-        productService.deleteProductById(productId);
+        deleteProductUseCase.execute(productId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
