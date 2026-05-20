@@ -1,11 +1,9 @@
 package com.ifsp.edu.sanca_dinner.controller.product;
 
-import com.ifsp.edu.sanca_dinner.application.product.mapper.ProductMapper;
 import com.ifsp.edu.sanca_dinner.application.product.use_cases.*;
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
-import com.ifsp.edu.sanca_dinner.domain.service.product.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductController {
 
-    private ProductService productService;
-    private ProductMapper productMapper;
     private CreateProductUseCase createProductUseCase;
     private GetAllProductsUseCase getAllProductsUseCase;
     private GetProductByIdUseCase getProductByIdUseCase;
