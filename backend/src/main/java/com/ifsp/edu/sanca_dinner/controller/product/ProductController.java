@@ -4,6 +4,7 @@ import com.ifsp.edu.sanca_dinner.application.product.mapper.ProductMapper;
 import com.ifsp.edu.sanca_dinner.application.product.use_cases.CreateProductUseCase;
 import com.ifsp.edu.sanca_dinner.application.product.use_cases.GetAllProductsUseCase;
 import com.ifsp.edu.sanca_dinner.application.product.use_cases.GetProductByIdUseCase;
+import com.ifsp.edu.sanca_dinner.application.product.use_cases.UpdateProductUseCase;
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
@@ -26,6 +27,7 @@ public class ProductController {
     private CreateProductUseCase createProductUseCase;
     private GetAllProductsUseCase getAllProductsUseCase;
     private GetProductByIdUseCase getProductByIdUseCase;
+    private UpdateProductUseCase updateProductUseCase;
 
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
@@ -44,9 +46,7 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest request){
-        var updatedProduct = productService.changeProduct(request.productId(),request.name(),request.price(),request.description());
-        var response = productMapper.productToResponse(updatedProduct);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(updateProductUseCase.execute(request));
     }
 
     @DeleteMapping("/{productId}")
