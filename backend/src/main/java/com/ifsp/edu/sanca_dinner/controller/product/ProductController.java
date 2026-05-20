@@ -1,5 +1,7 @@
 package com.ifsp.edu.sanca_dinner.controller.product;
 
+import com.ifsp.edu.sanca_dinner.application.product.mapper.ProductMapper;
+import com.ifsp.edu.sanca_dinner.application.product.use_cases.CreateProductUseCase;
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
@@ -19,12 +21,11 @@ public class ProductController {
 
     private ProductService productService;
     private ProductMapper productMapper;
+    private CreateProductUseCase createProductUseCase;
 
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
-        var newProduct = productService.addProduct(request.name(), request.price(), request.description());
-        var response = productMapper.productToResponse(newProduct);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(createProductUseCase.execute(request));
     }
 
     @GetMapping
