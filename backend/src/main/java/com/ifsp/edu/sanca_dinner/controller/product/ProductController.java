@@ -2,6 +2,7 @@ package com.ifsp.edu.sanca_dinner.controller.product;
 
 import com.ifsp.edu.sanca_dinner.application.product.mapper.ProductMapper;
 import com.ifsp.edu.sanca_dinner.application.product.use_cases.CreateProductUseCase;
+import com.ifsp.edu.sanca_dinner.application.product.use_cases.GetAllProductsUseCase;
 import com.ifsp.edu.sanca_dinner.controller.product.request.CreateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.request.UpdateProductRequest;
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
@@ -22,6 +23,7 @@ public class ProductController {
     private ProductService productService;
     private ProductMapper productMapper;
     private CreateProductUseCase createProductUseCase;
+    private GetAllProductsUseCase getAllProductsUseCase;
 
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
@@ -30,11 +32,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAll(){
-        var products = productService.getAllProducts();
-        var response = products.stream()
-                .map(productMapper::productToResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(getAllProductsUseCase.execute());
     }
 
     @GetMapping("/{productId}")
