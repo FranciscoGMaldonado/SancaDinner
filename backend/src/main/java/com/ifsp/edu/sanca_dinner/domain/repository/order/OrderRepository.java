@@ -10,5 +10,5 @@ public interface OrderRepository {
     Optional<Order> findById(Integer id);
     Order save(Order order);
     List<Order> findAll();
-    void deleteById(Order order);
+    void deleteById(Integer id);
 }
