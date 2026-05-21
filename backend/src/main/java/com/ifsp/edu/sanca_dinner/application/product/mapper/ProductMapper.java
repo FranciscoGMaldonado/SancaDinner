@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.controller.product;
+package com.ifsp.edu.sanca_dinner.application.product.mapper;
 
 import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
 import com.ifsp.edu.sanca_dinner.domain.model.product.Product;
