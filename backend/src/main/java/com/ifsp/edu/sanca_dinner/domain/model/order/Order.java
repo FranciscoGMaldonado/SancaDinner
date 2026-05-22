@@ -2,6 +2,7 @@ package com.ifsp.edu.sanca_dinner.domain.model.order;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItem;
+import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItemStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -50,6 +51,13 @@ public class Order {
         if(review == null || review.isBlank()) throw new DomainException("A review não pode ser vaiza ou nula.");
     }
 
+    private OrderItem findOrderItemById(Integer orderItemId){
+        return this.getOrderItems().stream().
+                filter(item -> item.getId().equals(orderItemId)).
+                findFirst().
+                orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
+    }
+
     public void setCustomerName(String customerName) {
         validateCustomerName(customerName);
         this.customerName = customerName;
@@ -74,5 +82,21 @@ public class Order {
         if(review != null && review.length() > 100) throw new DomainException("A review não pode ser superior a 100 caracteres.");
         this.review = review;
         this.orderStatus = OrderStatus.FINISHED;
+    }
+
+    public void changeOrderItem(Integer orderItemId, String newSpecification){
+        var orderItem = findOrderItemById(orderItemId);
+        if(orderItem.getOrderItemStatus() != OrderItemStatus.PENDING) throw new DomainException("Apenas é possivel alterar itens que estão pendentes.");
+        orderItem.setSpecification(newSpecification);
+    }
+
+    public void cancelOrderItem(Integer orderItemId){
+        var orderItem = findOrderItemById(orderItemId);
+        orderItem.cancelOrderItem();
+    }
+
+    public void progressOrderItem(Integer orderItemId){
+        var orderItem = findOrderItemById(orderItemId);
+        orderItem.progressStatus();
     }
 }

@@ -19,14 +19,7 @@ public class OrderService {
     private Order findOrderById(Integer orderId){
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
-
-    private OrderItem findOrderItemById(Order order, Integer orderItemId){
-        return order.getOrderItems().stream().
-                filter(item -> item.getId().equals(orderItemId)).
-                findFirst().
-                orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
-    }
-
+    
     public Order createOrder(String customerName, Integer tableNumber){
         var newOrder = new Order(customerName, tableNumber);
         return orderRepository.save(newOrder);
@@ -40,23 +33,19 @@ public class OrderService {
 
     public Order changeOrderItem(Integer orderId, Integer orderItemId, String newSpecification){
         var order = findOrderById(orderId);
-        var orderItem = findOrderItemById(order, orderItemId);
-        if(orderItem.getOrderItemStatus() != OrderItemStatus.PENDING) throw new DomainException("Apenas é possivel alterar itens que estão pendentes.");
-        orderItem.setSpecification(newSpecification);
+        order.changeOrderItem(orderItemId, newSpecification);
         return orderRepository.save(order);
     }
 
     public Order cancelOrderItem(Integer orderId, Integer orderItemId){
         var order = findOrderById(orderId);
-        var orderItem = findOrderItemById(order, orderItemId);
-        orderItem.cancelOrderItem();
+        order.cancelOrderItem(orderItemId);
         return orderRepository.save(order);
     }
 
     public Order progressOrderItem(Integer orderId, Integer orderItemId){
         var order = findOrderById(orderId);
-        var orderItem = findOrderItemById(order, orderItemId);
-        orderItem.progressStatus();
+        order.progressOrderItem(orderItemId);
         return orderRepository.save(order);
     }
 }
