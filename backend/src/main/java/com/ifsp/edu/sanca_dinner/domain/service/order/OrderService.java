@@ -46,4 +46,11 @@ public class OrderService {
         orderItem.setSpecification(newSpecification);
         return orderRepository.save(order);
     }
+
+    public Order cancelOrderItem(Integer orderId, Integer orderItemId){
+        var order = findOrderById(orderId);
+        var orderItem = findOrderItemById(order, orderItemId);
+        orderItem.setOrderItemStatus(OrderItemStatus.CANCELED);
+        return orderRepository.save(order);
+    }
 }
