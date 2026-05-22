@@ -52,4 +52,11 @@ public class OrderService {
         orderItem.cancelOrderItem();
         return orderRepository.save(order);
     }
+
+    public Order progressOrderItem(Integer orderId, Integer orderItemId){
+        var order = findOrderById(orderId);
+        var orderItem = findOrderItemById(order, orderItemId);
+        orderItem.progressStatus();
+        return orderRepository.save(order);
+    }
 }
