@@ -49,7 +49,7 @@ public class OrderService {
     public Order cancelOrderItem(Integer orderId, Integer orderItemId){
         var order = findOrderById(orderId);
         var orderItem = findOrderItemById(order, orderItemId);
-        orderItem.setOrderItemStatus(OrderItemStatus.CANCELED);
+        orderItem.cancelOrderItem();
         return orderRepository.save(order);
     }
 }
