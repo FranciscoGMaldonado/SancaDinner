@@ -15,13 +15,17 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
+    private Order findOrderByIdWrapper(Integer orderId){
+        return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
+    }
+
     public Order createOrder(String customerName, Integer tableNumber){
         var newOrder = new Order(customerName, tableNumber);
         return orderRepository.save(newOrder);
     }
 
     public Order addOrderItem(Integer orderId, Integer productId, String specification, BigDecimal productPrice){
-        var order = orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
+        var order = findOrderByIdWrapper(orderId);
         order.addOrderItem(new OrderItem(productId, specification, productPrice));
         return orderRepository.save(order);
     }
