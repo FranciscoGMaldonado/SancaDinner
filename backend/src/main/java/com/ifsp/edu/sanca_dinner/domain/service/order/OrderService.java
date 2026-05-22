@@ -16,11 +16,11 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
-    private Order findOrderByIdWrapper(Integer orderId){
+    private Order findOrderById(Integer orderId){
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
 
-    private OrderItem findOrderItemByIdWrapper(Order order, Integer orderItemId){
+    private OrderItem findOrderItemById(Order order, Integer orderItemId){
         var orderItem = order.getOrderItems().stream().
                 filter(item -> item.getId().equals(orderItemId)).
                 findFirst().
@@ -34,14 +34,14 @@ public class OrderService {
     }
 
     public Order addOrderItem(Integer orderId, Integer productId, String specification, BigDecimal productPrice){
-        var order = findOrderByIdWrapper(orderId);
+        var order = findOrderById(orderId);
         order.addOrderItem(new OrderItem(productId, specification, productPrice));
         return orderRepository.save(order);
     }
 
     public Order changeOrderItem(Integer orderId, Integer orderItemId, String newSpecification){
-        var order = findOrderByIdWrapper(orderId);
-        var orderItem = findOrderItemByIdWrapper(order, orderItemId);
+        var order = findOrderById(orderId);
+        var orderItem = findOrderItemById(order, orderItemId);
         if(orderItem.getOrderItemStatus() != OrderItemStatus.PENDING) throw new DomainException("Apenas é possivel alterar itens que estão pendentes.");
         orderItem.setSpecification(newSpecification);
         return orderRepository.save(order);
