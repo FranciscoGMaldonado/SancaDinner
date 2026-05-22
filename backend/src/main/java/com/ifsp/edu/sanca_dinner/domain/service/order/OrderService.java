@@ -21,11 +21,10 @@ public class OrderService {
     }
 
     private OrderItem findOrderItemById(Order order, Integer orderItemId){
-        var orderItem = order.getOrderItems().stream().
+        return order.getOrderItems().stream().
                 filter(item -> item.getId().equals(orderItemId)).
                 findFirst().
                 orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
-        return orderItem;
     }
 
     public Order createOrder(String customerName, Integer tableNumber){
