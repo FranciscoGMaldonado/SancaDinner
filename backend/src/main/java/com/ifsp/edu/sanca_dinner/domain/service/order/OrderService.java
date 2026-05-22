@@ -20,6 +20,14 @@ public class OrderService {
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
 
+    private OrderItem findOrderItemByIdWrapper(Order order, Integer orderItemId){
+        var orderItem = order.getOrderItems().stream().
+                filter(item -> item.getId().equals(orderItemId)).
+                findFirst().
+                orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
+        return orderItem;
+    }
+
     public Order createOrder(String customerName, Integer tableNumber){
         var newOrder = new Order(customerName, tableNumber);
         return orderRepository.save(newOrder);
@@ -33,10 +41,7 @@ public class OrderService {
 
     public Order changeOrderItem(Integer orderId, Integer orderItemId, String newSpecification){
         var order = findOrderByIdWrapper(orderId);
-        var orderItem = order.getOrderItems().stream().
-                filter(item -> item.getId().equals(orderItemId)).
-                findFirst().
-                orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
+        var orderItem = findOrderItemByIdWrapper(order, orderItemId);
         if(orderItem.getOrderItemStatus() != OrderItemStatus.PENDING) throw new DomainException("Apenas é possivel alterar itens que estão pendentes.");
         orderItem.setSpecification(newSpecification);
         return orderRepository.save(order);
