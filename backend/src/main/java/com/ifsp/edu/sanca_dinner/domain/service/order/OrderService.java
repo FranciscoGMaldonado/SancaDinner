@@ -3,7 +3,6 @@ package com.ifsp.edu.sanca_dinner.domain.service.order;
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.order.Order;
 import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItem;
-import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItemStatus;
 import com.ifsp.edu.sanca_dinner.domain.repository.order.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
