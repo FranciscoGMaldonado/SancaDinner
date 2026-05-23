@@ -2,12 +2,14 @@ package com.ifsp.edu.sanca_dinner.domain.service.order;
 
 import com.ifsp.edu.sanca_dinner.domain.exception.DomainException;
 import com.ifsp.edu.sanca_dinner.domain.model.order.Order;
+import com.ifsp.edu.sanca_dinner.domain.model.order.OrderStatus;
 import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItem;
 import com.ifsp.edu.sanca_dinner.domain.repository.order.OrderRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -17,6 +19,10 @@ public class OrderService {
 
     public Order findOrderById(Integer orderId){
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
+    }
+
+    public List<Order> findAllActiveOrders(){
+        return orderRepository.findByOrderStatus(OrderStatus.ACTIVE);
     }
 
     public Order createOrder(String customerName, Integer tableNumber){
