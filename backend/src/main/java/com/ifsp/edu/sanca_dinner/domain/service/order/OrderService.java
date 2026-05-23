@@ -21,6 +21,10 @@ public class OrderService {
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
 
+    public List<Order> findAllOrders(){
+        return orderRepository.findAll();
+    }
+
     public List<Order> findAllOrdersByStatus(OrderStatus orderStatus){
         return orderRepository.findByOrderStatus(orderStatus);
     }
