@@ -6,6 +6,7 @@ import com.ifsp.edu.sanca_dinner.domain.model.order_item.OrderItemStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 @Entity
@@ -102,5 +103,12 @@ public class Order {
     public void progressOrderItem(Integer orderItemId){
         var orderItem = findOrderItemById(orderItemId);
         orderItem.progressStatus();
+    }
+
+    public BigDecimal getTotal(){
+        return this.orderItems.stream()
+                .filter(item -> item.getOrderItemStatus() != OrderItemStatus.CANCELED)
+                .map(OrderItem::getProductPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
