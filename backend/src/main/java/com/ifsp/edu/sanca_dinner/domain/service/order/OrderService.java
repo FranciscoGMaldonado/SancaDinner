@@ -48,4 +48,10 @@ public class OrderService {
         order.progressOrderItem(orderItemId);
         return orderRepository.save(order);
     }
+
+    public Order closeOrder(Integer orderId, String review){
+        var order = findOrderById(orderId);
+        order.closeOrder(review);
+        return orderRepository.save(order);
+    }
 }
