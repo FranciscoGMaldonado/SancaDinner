@@ -19,7 +19,7 @@ public class OrderService {
     private Order findOrderById(Integer orderId){
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
-    
+
     public Order createOrder(String customerName, Integer tableNumber){
         var newOrder = new Order(customerName, tableNumber);
         return orderRepository.save(newOrder);
