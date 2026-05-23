@@ -4,9 +4,13 @@ import com.ifsp.edu.sanca_dinner.application.order.mapper.OrderMapper;
 import com.ifsp.edu.sanca_dinner.controller.order.response.OrderResponse;
 import com.ifsp.edu.sanca_dinner.domain.model.order.OrderStatus;
 import com.ifsp.edu.sanca_dinner.domain.service.order.OrderService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
+@AllArgsConstructor
 public class GetAllActiveOrdersUseCase {
 
     private OrderService orderService;
