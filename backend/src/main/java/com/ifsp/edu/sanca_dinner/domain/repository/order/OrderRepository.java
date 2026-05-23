@@ -1,6 +1,7 @@
 package com.ifsp.edu.sanca_dinner.domain.repository.order;
 
 import com.ifsp.edu.sanca_dinner.domain.model.order.Order;
+import com.ifsp.edu.sanca_dinner.domain.model.order.OrderStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,5 @@ public interface OrderRepository {
     Order save(Order order);
     List<Order> findAll();
     void deleteById(Integer id);
+    List<Order> findByOrderStatus(OrderStatus orderStatus);
 }

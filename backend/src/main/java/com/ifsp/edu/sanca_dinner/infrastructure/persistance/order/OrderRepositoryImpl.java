@@ -1,6 +1,7 @@
 package com.ifsp.edu.sanca_dinner.infrastructure.persistance.order;
 
 import com.ifsp.edu.sanca_dinner.domain.model.order.Order;
+import com.ifsp.edu.sanca_dinner.domain.model.order.OrderStatus;
 import com.ifsp.edu.sanca_dinner.domain.repository.order.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findAll() { return jpaRepository.findAll(); }
+
+    @Override
+    public List<Order> findByOrderStatus(OrderStatus orderStatus) { return jpaRepository.findByOrderStatus(orderStatus);}
 
     @Override
     public void deleteById(Integer id) { jpaRepository.deleteById(id); }
