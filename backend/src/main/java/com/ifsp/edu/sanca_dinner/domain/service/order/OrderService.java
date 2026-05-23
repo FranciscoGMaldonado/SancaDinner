@@ -15,7 +15,7 @@ public class OrderService {
 
     private OrderRepository orderRepository;
 
-    private Order findOrderById(Integer orderId){
+    public Order findOrderById(Integer orderId){
         return orderRepository.findById(orderId).orElseThrow(() -> new DomainException("Comanda não encontrada."));
     }
 
