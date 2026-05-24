@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderController {
 
     private AddOrderItemUseCase addOrderItemUseCase;
-    private CancelOrderItemUseCase cancelOrderItemUseCase; //Delete (/order_items)
+    private CancelOrderItemUseCase cancelOrderItemUseCase;
     private ChangeOrderItemUseCase changeOrderItemUseCase;
     private CloseOrderUseCase closeOrderUseCase;
     private CreateOrderUseCase createOrderUseCase;
@@ -64,5 +64,10 @@ public class OrderController {
     @GetMapping("/{order_id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Integer orderId){
         return ResponseEntity.status(HttpStatus.OK).body(getOrderUseCase.execute(orderId));
+    }
+
+    @DeleteMapping("/order_item")
+    public ResponseEntity<OrderResponse> cancelOrderItem(CancelOrderItemRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(cancelOrderItemUseCase.execute(request));
     }
 }
