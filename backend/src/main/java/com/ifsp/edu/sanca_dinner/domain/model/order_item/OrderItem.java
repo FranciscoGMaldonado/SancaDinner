@@ -44,6 +44,10 @@ public class OrderItem {
         if(productPrice == null || productPrice.compareTo(BigDecimal.ZERO) <= 0) throw new DomainException("O preço do produto não pode ser menor ou igual a zero, ou nulo.");
     }
 
+    private void setOrderItemStatus(OrderItemStatus orderItemStatus) {
+        this.orderItemStatus = orderItemStatus;
+    }
+
     public void setProductId(Integer productId) {
         validateProductId(productId);
         this.productId = productId;
@@ -59,7 +63,14 @@ public class OrderItem {
         this.productPrice = productPrice;
     }
 
-    public void setOrderItemStatus(OrderItemStatus orderItemStatus) {
-        this.orderItemStatus = orderItemStatus;
+    public void cancelOrderItem(){
+        this.setOrderItemStatus(OrderItemStatus.CANCELED);
+    }
+
+    public void progressStatus(){
+        if(this.getOrderItemStatus() == OrderItemStatus.DELIVERED) throw new DomainException("Item já entregue.");
+        else if(this.getOrderItemStatus() == OrderItemStatus.CANCELED) throw new DomainException("Item cancelado.");
+        else if(this.getOrderItemStatus() == OrderItemStatus.PENDING) this.setOrderItemStatus(OrderItemStatus.FINISHED);
+        else this.setOrderItemStatus(OrderItemStatus.DELIVERED);
     }
 }
