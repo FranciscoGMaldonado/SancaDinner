@@ -1,18 +1,12 @@
 package com.ifsp.edu.sanca_dinner.controller.order;
 
 import com.ifsp.edu.sanca_dinner.application.order.use_cases.*;
-import com.ifsp.edu.sanca_dinner.controller.order.request.CloseOrderRequest;
-import com.ifsp.edu.sanca_dinner.controller.order.request.CreateOrderItemRequest;
-import com.ifsp.edu.sanca_dinner.controller.order.request.CreateOrderRequest;
-import com.ifsp.edu.sanca_dinner.controller.order.request.ProgressOrderItemRequest;
+import com.ifsp.edu.sanca_dinner.controller.order.request.*;
 import com.ifsp.edu.sanca_dinner.controller.order.response.OrderResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orders")
@@ -21,7 +15,7 @@ public class OrderController {
 
     private AddOrderItemUseCase addOrderItemUseCase;
     private CancelOrderItemUseCase cancelOrderItemUseCase; //Delete (/order_items)
-    private ChangeOrderItemUseCase changeOrderItemUseCase; //Put
+    private ChangeOrderItemUseCase changeOrderItemUseCase;
     private CloseOrderUseCase closeOrderUseCase;
     private CreateOrderUseCase createOrderUseCase;
     private GetAllActiveOrdersUseCase getAllActiveOrdersUseCase; //Get (/active
@@ -44,8 +38,13 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(closeOrderUseCase.execute(request));
     }
 
-    @PostMapping("/progress")
+    @PostMapping("/order_items/progress")
     public ResponseEntity<OrderResponse> closeOrder(@RequestBody ProgressOrderItemRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(progressOrderItemUseCase.execute(request));
+    }
+
+    @PutMapping("/order_items")
+    public ResponseEntity<OrderResponse> changeOrderItem(@RequestBody ChangeOrderItemRequest request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(changeOrderItemUseCase.execute(request));
     }
 }
