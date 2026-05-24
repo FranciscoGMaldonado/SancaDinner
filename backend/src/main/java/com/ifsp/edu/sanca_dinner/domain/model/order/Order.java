@@ -77,6 +77,7 @@ public class Order {
 
     public void addOrderItem(OrderItem newOrderItem){
         if(newOrderItem == null) throw new DomainException("O item adicionado a comanda não pode ser nulo.");
+        if(this.orderStatus == OrderStatus.FINISHED) throw new DomainException("A comanda já foi finalizada.");
         orderItems.add(newOrderItem);
     }
 
