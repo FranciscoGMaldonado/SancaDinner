@@ -3,10 +3,13 @@ package com.ifsp.edu.sanca_dinner.controller.order;
 import com.ifsp.edu.sanca_dinner.application.order.use_cases.*;
 import com.ifsp.edu.sanca_dinner.controller.order.request.*;
 import com.ifsp.edu.sanca_dinner.controller.order.response.OrderResponse;
+import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -18,9 +21,9 @@ public class OrderController {
     private ChangeOrderItemUseCase changeOrderItemUseCase;
     private CloseOrderUseCase closeOrderUseCase;
     private CreateOrderUseCase createOrderUseCase;
-    private GetAllActiveOrdersUseCase getAllActiveOrdersUseCase; //Get (/active
-    private GetAllOrdersUseCase getAllOrdersUseCase; //Get
-    private GetOrderUseCase getOrderUseCase; //Get (/{order_id}
+    private GetAllActiveOrdersUseCase getAllActiveOrdersUseCase;
+    private GetAllOrdersUseCase getAllOrdersUseCase;
+    private GetOrderUseCase getOrderUseCase;
     private ProgressOrderItemUseCase progressOrderItemUseCase;
 
     @PostMapping
@@ -45,6 +48,21 @@ public class OrderController {
 
     @PutMapping("/order_items")
     public ResponseEntity<OrderResponse> changeOrderItem(@RequestBody ChangeOrderItemRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(changeOrderItemUseCase.execute(request));
+        return ResponseEntity.status(HttpStatus.OK).body(changeOrderItemUseCase.execute(request));
+    }
+
+    @GetMapping("/active")
+    public ResponseEntity<List<OrderResponse>> getAllActiveOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(getAllActiveOrdersUseCase.execute());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> getAllOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(getAllOrdersUseCase.execute());
+    }
+
+    @GetMapping("/{order_id}")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable Integer orderId){
+        return ResponseEntity.status(HttpStatus.OK).body(getOrderUseCase.execute(orderId));
     }
 }
