@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -29,7 +30,7 @@ public class Order {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "order_id")
-    private ArrayList<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
 
     protected Order(){}
 
@@ -53,7 +54,7 @@ public class Order {
     }
 
     private OrderItem findOrderItemById(Integer orderItemId){
-        return this.getOrderItems().stream().
+        return this.orderItems.stream().
                 filter(item -> item.getId().equals(orderItemId)).
                 findFirst().
                 orElseThrow(() -> new DomainException("Item da comanda não encontrado."));
@@ -82,8 +83,8 @@ public class Order {
     public void closeOrder(String review){
         if(review != null && review.length() > 100) throw new DomainException("A review não pode ser superior a 100 caracteres.");
         var nonFinishedOrderItem = orderItems.stream().
-                                    filter(item -> item.getOrderItemStatus() != OrderItemStatus.DELIVERED && item.getOrderItemStatus() != OrderItemStatus.CANCELED).
-                                    findAny();
+                filter(item -> item.getOrderItemStatus() != OrderItemStatus.DELIVERED && item.getOrderItemStatus() != OrderItemStatus.CANCELED).
+                findAny();
         if(nonFinishedOrderItem.isPresent()) throw new DomainException("A comanda não pode ser finalizada se algum item ainda está pendente, ou não foi entregue.");
         this.review = review;
         this.orderStatus = OrderStatus.FINISHED;
