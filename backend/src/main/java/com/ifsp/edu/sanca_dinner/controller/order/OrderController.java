@@ -61,13 +61,13 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(getAllOrdersUseCase.execute());
     }
 
-    @GetMapping("/{order_id}")
+    @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Integer orderId){
         return ResponseEntity.status(HttpStatus.OK).body(getOrderUseCase.execute(orderId));
     }
 
-    @DeleteMapping("/order_item")
-    public ResponseEntity<OrderResponse> cancelOrderItem(CancelOrderItemRequest request){
+    @DeleteMapping("/order_items")
+    public ResponseEntity<OrderResponse> cancelOrderItem(@RequestBody CancelOrderItemRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(cancelOrderItemUseCase.execute(request));
     }
 }

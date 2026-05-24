@@ -8,3 +8,5 @@ RUN flutter pub get
 COPY . .
 
 EXPOSE 3000
+
+CMD ["bash", "-c", "flutter run -d web-server --web-port=3000"]
