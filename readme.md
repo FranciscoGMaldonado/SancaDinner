@@ -6,29 +6,47 @@ Projeto desenvolvido para a disciplina de Tópicos em Computação, exercida no 
 
 Para subir os containers referentes ao projeto, é necessário realizar os seguintes passos:
 
-1. Realizar o build da aplicação. Para isso, na raiz do repositório, rode:
+### Builds
+
+- Primeiro, realize os builds da aplicação. Na raiz do repositório, rode:
 
 ```bash
 docker build -t backend ./backend/.
 docker build -t frontend ./frontend/.
 ```
 
-2. Também, deve rodar esse comando no diretório do `frontend`:
+### Backend
+
+- Para rodar os serviços de Backend, deve-se criar um arquivo `.env` no diretório do `backend` com as variáveis usadas pelos serviços. 
+  - Possuímos o [.env.example](.env.example) com valores mock para serem usados localmente.
+  - Para o valor `JWT_SECRET`, será necessário criar um valor em `Base64` de pelo menos 32 caracteres. Pode ser feito pelo terminal usando:
+    - Windows: `[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))`.
+    - Linux/Mac: `openssl rand -base64 32`.
+
+- Para iniciá-los, rode o comando:
+
+```bash
+docker compose up -d
+```
+
+### Frontend
+
+- Primeiro, deve rodar esse comando no diretório do `frontend`:
 
 ```bash
 flutter pub get
 ```
 
-3. Depois, deve-se criar um arquivo `.env` no diretório do `backend` com as variáveis usadas pelos serviços. 
-   - Possuímos o [.env.example](.env.example) com valores mock para serem usados localmente.
-   - Para o valor `JWT_SECRET`, será necessário criar um valor em `Base64` de pelo menos 32 caracteres. Pode ser feito pelo terminal usando:
-     - Windows: `[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))`.
-     - Linux/Mac: `openssl rand -base64 32`.
-
-4. Por fim, para iniciar os containers, rode:
+- Depois, use esse comando para criar o container do Frontend:
 
 ```bash
-docker compose up -d
+docker run -it --rm --name frontend -p 3000:3000 -v ./frontend:/app -v /app/.dart_tool frontend bash
+```
+
+- Para iniciar o servidor web, rode dentro do container:
+
+```bash
+flutter run -d web-server --web-port=3000
 ```
 
 ## Postgres
