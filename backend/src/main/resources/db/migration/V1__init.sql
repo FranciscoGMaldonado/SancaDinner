@@ -18,21 +18,16 @@ CREATE TABLE orders (
     customer_name TEXT      NOT NULL,
     table_number  INTEGER   NOT NULL,
     status        TEXT      NOT NULL,
-    review        TEXT,
-    ts_start      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    ts_end        TIMESTAMP WITHOUT TIME ZONE NOT NULL
+    review        TEXT
 );
 
 CREATE TABLE order_items (
     id            INTEGER   GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    order_id      INTEGER   NOT NULL,
+    order_id      INTEGER,
     product_id    INTEGER   NOT NULL,
     product_price NUMERIC(10,2) NOT NULL,
     specification TEXT,
     status        TEXT      NOT NULL,
-    quantity      INTEGER   NOT NULL,
-    ts_start      TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    ts_end        TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     FOREIGN KEY (order_id)   REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );

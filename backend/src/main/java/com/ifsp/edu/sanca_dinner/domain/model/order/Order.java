@@ -26,11 +26,12 @@ public class Order {
     private String review;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private OrderStatus orderStatus;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "order_id")
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     protected Order(){}
 
@@ -38,7 +39,6 @@ public class Order {
         setCustomerName(customerName);
         setTableNumber(tableNumber);
         this.orderStatus = OrderStatus.ACTIVE;
-        this.orderItems = new ArrayList<>();
     }
 
     private void validateCustomerName(String customerName){
