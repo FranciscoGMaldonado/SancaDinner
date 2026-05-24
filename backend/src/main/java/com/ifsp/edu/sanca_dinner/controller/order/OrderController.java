@@ -35,12 +35,12 @@ public class OrderController {
 
     @PostMapping("/close")
     public ResponseEntity<OrderResponse> closeOrder(@RequestBody CloseOrderRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(closeOrderUseCase.execute(request));
+        return ResponseEntity.status(HttpStatus.OK).body(closeOrderUseCase.execute(request));
     }
 
     @PostMapping("/order_items/progress")
-    public ResponseEntity<OrderResponse> closeOrder(@RequestBody ProgressOrderItemRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(progressOrderItemUseCase.execute(request));
+    public ResponseEntity<OrderResponse> progressOrderItem(@RequestBody ProgressOrderItemRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(progressOrderItemUseCase.execute(request));
     }
 
     @PutMapping("/order_items")
