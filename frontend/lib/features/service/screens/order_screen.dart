@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/comanda_controller.dart';
-import 'comanda_customer_step.dart';
-import 'comanda_items_step.dart';
-import 'comanda_review_step.dart';
-import 'comanda_success_screen.dart';
+import '../controllers/order_controller.dart';
+import 'order_customer_step.dart';
+import 'order_items_step.dart';
+import 'order_review_step.dart';
+import 'order_success_screen.dart';
 
-class ComandaScreen extends StatelessWidget {
-  const ComandaScreen({super.key});
+class OrderScreen extends StatelessWidget {
+  const OrderScreen({super.key});
 
   static const _accentColor = Color(0xFFD4552A);
   static const _bgColor = Color(0xFF0F0D0A);
@@ -17,10 +17,10 @@ class ComandaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.watch<ComandaController>();
+    final ctrl = context.watch<OrderController>();
 
     if (ctrl.submitted) {
-      return const ComandaSuccessScreen();
+      return const OrderSuccessScreen();
     }
 
     return Scaffold(
@@ -35,9 +35,9 @@ class ComandaScreen extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, ComandaController ctrl) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, OrderController ctrl) {
     // Determina se há navegação para trás possível
-    final canGoBack = ctrl.step != ComandaStep.customerInfo;
+    final canGoBack = ctrl.step != OrderStep.customerInfo;
 
     return AppBar(
       backgroundColor: _surfaceColor,
@@ -51,10 +51,10 @@ class ComandaScreen extends StatelessWidget {
               icon: const Icon(Icons.arrow_back_ios_new_rounded,
                   color: Colors.white, size: 18),
               onPressed: () {
-                if (ctrl.step == ComandaStep.addItems) {
-                  ctrl.goTo(ComandaStep.customerInfo);
-                } else if (ctrl.step == ComandaStep.review) {
-                  ctrl.goTo(ComandaStep.addItems);
+                if (ctrl.step == OrderStep.addItems) {
+                  ctrl.goTo(OrderStep.customerInfo);
+                } else if (ctrl.step == OrderStep.review) {
+                  ctrl.goTo(OrderStep.addItems);
                 }
               },
             )
@@ -86,7 +86,7 @@ class ComandaScreen extends StatelessWidget {
         ),
       ),
       actions: [
-        if (ctrl.totalItems > 0 && ctrl.step == ComandaStep.addItems)
+        if (ctrl.totalItems > 0 && ctrl.step == OrderStep.addItems)
           Padding(
             padding: const EdgeInsets.only(right: 16),
             child: _CartBadge(count: ctrl.totalItems, total: ctrl.formattedTotal),
@@ -95,14 +95,14 @@ class ComandaScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(ComandaController ctrl) {
+  Widget _buildBody(OrderController ctrl) {
     switch (ctrl.step) {
-      case ComandaStep.customerInfo:
-        return const ComandaCustomerStep();
-      case ComandaStep.addItems:
-        return const ComandaItemsStep();
-      case ComandaStep.review:
-        return const ComandaReviewStep();
+      case OrderStep.customerInfo:
+        return const OrderCustomerStep();
+      case OrderStep.addItems:
+        return const OrderItemsStep();
+      case OrderStep.review:
+        return const OrderReviewStep();
     }
   }
 }
@@ -110,14 +110,14 @@ class ComandaScreen extends StatelessWidget {
 // ── Step Indicator ──────────────────────────────────────────────────────────
 
 class _StepIndicator extends StatelessWidget {
-  final ComandaStep current;
+  final OrderStep current;
   const _StepIndicator({required this.current});
 
   static const _accentColor = Color(0xFFD4552A);
   static const _borderColor = Color(0xFF2E2A25);
   static const _surfaceColor = Color(0xFF1A1714);
 
-  int get _currentIndex => ComandaStep.values.indexOf(current);
+  int get _currentIndex => OrderStep.values.indexOf(current);
 
   @override
   Widget build(BuildContext context) {

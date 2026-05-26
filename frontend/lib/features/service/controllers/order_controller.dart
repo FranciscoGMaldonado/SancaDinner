@@ -4,20 +4,19 @@ import 'package:http/http.dart' as http;
 import '../models/product_model.dart';
 import '../models/order_item_draft.dart';
 
-enum ComandaStep { customerInfo, addItems, review }
+enum OrderStep { customerInfo, addItems, review }
 
-class ComandaController extends ChangeNotifier {
+class OrderController extends ChangeNotifier {
   static const String _baseUrl = 'http://host.docker.internal:8080/api';
 
-  // ── Auth ──────────────────────────────────────────────
   final String token;
-  ComandaController({required this.token});
+  OrderController({required this.token});
 
   // ── Navigation ────────────────────────────────────────
-  ComandaStep _step = ComandaStep.customerInfo;
-  ComandaStep get step => _step;
+  OrderStep _step = OrderStep.customerInfo;
+  OrderStep get step => _step;
 
-  void goTo(ComandaStep s) {
+  void goTo(OrderStep s) {
     _step = s;
     notifyListeners();
   }
@@ -71,8 +70,9 @@ class ComandaController extends ChangeNotifier {
       );
       if (res.statusCode == 200) {
         final list = jsonDecode(res.body) as List<dynamic>;
-        _products =
-            list.map((e) => ProductModel.fromJson(e as Map<String, dynamic>)).toList();
+        _products = list
+            .map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
+            .toList();
       } else {
         _productsError = 'Erro ao carregar produtos.';
       }
@@ -83,7 +83,7 @@ class ComandaController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Items / Comanda ───────────────────────────────────
+  // ── Items / Order ───────────────────────────────────
   final List<OrderItemDraft> _items = [];
   List<OrderItemDraft> get items => List.unmodifiable(_items);
 
@@ -127,8 +127,7 @@ class ComandaController extends ChangeNotifier {
     notifyListeners();
   }
 
-  double get totalPrice =>
-      _items.fold(0.0, (acc, i) => acc + i.subtotal);
+  double get totalPrice => _items.fold(0.0, (acc, i) => acc + i.subtotal);
 
   String get formattedTotal =>
       'R\$ ${totalPrice.toStringAsFixed(2).replaceAll('.', ',')}';
@@ -136,6 +135,11 @@ class ComandaController extends ChangeNotifier {
   int get totalItems => _items.fold(0, (acc, i) => acc + i.quantity);
 
   // ── Submit ────────────────────────────────────────────
+  // O backend separa criação da ordem e adição de itens:
+  // 1. POST /api/orders         → { customerName, tableId }       → retorna orderId
+  // 2. POST /api/orders/order_items (repetido por item+quantidade)
+  //                             → { orderId, productId, specification }
+
   bool _submitting = false;
   bool get submitting => _submitting;
 
@@ -148,44 +152,65 @@ class ComandaController extends ChangeNotifier {
   int? _createdOrderId;
   int? get createdOrderId => _createdOrderId;
 
+  Map<String, String> get _headers => {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      };
+
   Future<bool> submitOrder() async {
     _submitting = true;
     _submitError = null;
     notifyListeners();
 
-    final body = jsonEncode({
-      'customerName': customerName.trim(),
-      'tableNumber': tableNumber,
-      'items': _items
-          .map((i) => {
-                'productId': i.product.id,
-                'productPrice': i.product.price,
-                'quantity': i.quantity,
-                if (i.specification.isNotEmpty) 'specification': i.specification,
-              })
-          .toList(),
-    });
-
     try {
-      final res = await http.post(
+      // ── Passo 1: criar a ordem ─────────────────────────
+      final orderRes = await http.post(
         Uri.parse('$_baseUrl/orders'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-        body: body,
+        headers: _headers,
+        body: jsonEncode({
+          'customerName': customerName.trim(),
+          'tableId': tableNumber,       // campo correto do backend
+        }),
       );
 
-      if (res.statusCode == 201 || res.statusCode == 200) {
-        final data = jsonDecode(res.body) as Map<String, dynamic>?;
-        _createdOrderId = data?['id'] as int?;
-        _submitted = true;
+      if (orderRes.statusCode != 201 && orderRes.statusCode != 200) {
+        _submitError = 'Erro ao criar comanda. Tente novamente.';
         _submitting = false;
         notifyListeners();
-        return true;
-      } else {
-        _submitError = 'Erro ao enviar comanda. Tente novamente.';
+        return false;
       }
+
+      final orderData = jsonDecode(orderRes.body) as Map<String, dynamic>;
+      final orderId = orderData['id'] as int;
+
+      // ── Passo 2: adicionar itens (quantity × POST) ──────
+      for (final item in _items) {
+        for (int q = 0; q < item.quantity; q++) {
+          final itemRes = await http.post(
+            Uri.parse('$_baseUrl/orders/order_items'),
+            headers: _headers,
+            body: jsonEncode({
+              'orderId': orderId,
+              'productId': item.product.id,
+              if (item.specification.isNotEmpty)
+                'specification': item.specification,
+            }),
+          );
+
+          if (itemRes.statusCode != 201 && itemRes.statusCode != 200) {
+            _submitError = 'Erro ao adicionar item "${item.product.name}".';
+            _submitting = false;
+            notifyListeners();
+            return false;
+          }
+        }
+      }
+
+      _createdOrderId = orderId;
+      _submitted = true;
+      _submitting = false;
+      notifyListeners();
+      return true;
     } on http.ClientException {
       _submitError = 'Sem conexão com o servidor.';
     } catch (_) {
@@ -199,7 +224,7 @@ class ComandaController extends ChangeNotifier {
 
   // ── Reset ─────────────────────────────────────────────
   void reset() {
-    _step = ComandaStep.customerInfo;
+    _step = OrderStep.customerInfo;
     customerName = '';
     tableNumber = null;
     _items.clear();

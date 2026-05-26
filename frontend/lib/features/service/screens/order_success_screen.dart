@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/comanda_controller.dart';
+import '../controllers/order_controller.dart';
 
-class ComandaSuccessScreen extends StatefulWidget {
-  const ComandaSuccessScreen({super.key});
+class OrderSuccessScreen extends StatefulWidget {
+  const OrderSuccessScreen({super.key});
 
   @override
-  State<ComandaSuccessScreen> createState() => _ComandaSuccessScreenState();
+  State<OrderSuccessScreen> createState() => _OrderSuccessScreenState();
 }
 
-class _ComandaSuccessScreenState extends State<ComandaSuccessScreen>
+class _OrderSuccessScreenState extends State<OrderSuccessScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _anim;
   late Animation<double> _scale;
@@ -40,7 +40,7 @@ class _ComandaSuccessScreenState extends State<ComandaSuccessScreen>
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.watch<ComandaController>();
+    final ctrl = context.watch<OrderController>();
 
     return Scaffold(
       backgroundColor: _bgColor,

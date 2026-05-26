@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/comanda_controller.dart';
+import '../controllers/order_controller.dart';
 import '../models/order_item_draft.dart';
 
-class ComandaReviewStep extends StatefulWidget {
-  const ComandaReviewStep({super.key});
+class OrderReviewStep extends StatefulWidget {
+  const OrderReviewStep({super.key});
 
   @override
-  State<ComandaReviewStep> createState() => _ComandaReviewStepState();
+  State<OrderReviewStep> createState() => _OrderReviewStepState();
 }
 
-class _ComandaReviewStepState extends State<ComandaReviewStep>
+class _OrderReviewStepState extends State<OrderReviewStep>
     with SingleTickerProviderStateMixin {
   late AnimationController _anim;
   late Animation<double> _fade;
@@ -37,7 +37,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.watch<ComandaController>();
+    final ctrl = context.watch<OrderController>();
 
     return FadeTransition(
       opacity: _fade,
@@ -66,7 +66,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
     );
   }
 
-  Widget _buildInfoCard(ComandaController ctrl) {
+  Widget _buildInfoCard(OrderController ctrl) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -98,7 +98,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
           ),
           const Spacer(),
           GestureDetector(
-            onTap: () => ctrl.goTo(ComandaStep.customerInfo),
+            onTap: () => ctrl.goTo(OrderStep.customerInfo),
             child: Text('Editar', style: TextStyle(color: _accentColor, fontSize: 13)),
           ),
         ],
@@ -106,7 +106,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
     );
   }
 
-  Widget _buildItemsSection(ComandaController ctrl) {
+  Widget _buildItemsSection(OrderController ctrl) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -122,7 +122,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
             ),
             const Spacer(),
             GestureDetector(
-              onTap: () => ctrl.goTo(ComandaStep.addItems),
+              onTap: () => ctrl.goTo(OrderStep.addItems),
               child: Text('Editar', style: TextStyle(color: _accentColor, fontSize: 13)),
             ),
           ],
@@ -163,7 +163,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
     );
   }
 
-  Widget _buildActions(ComandaController ctrl) {
+  Widget _buildActions(OrderController ctrl) {
     return Container(
       decoration: BoxDecoration(
         color: _surfaceColor,
@@ -173,7 +173,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
       child: Row(
         children: [
           OutlinedButton(
-            onPressed: ctrl.submitting ? null : () => ctrl.goTo(ComandaStep.addItems),
+            onPressed: ctrl.submitting ? null : () => ctrl.goTo(OrderStep.addItems),
             style: OutlinedButton.styleFrom(
               foregroundColor: Colors.white,
               side: const BorderSide(color: Color(0xFF2E2A25)),
@@ -221,7 +221,7 @@ class _ComandaReviewStepState extends State<ComandaReviewStep>
   }
 
   Future<void> _submit() async {
-    final ctrl = context.read<ComandaController>();
+    final ctrl = context.read<OrderController>();
     await ctrl.submitOrder();
   }
 }
@@ -259,7 +259,7 @@ class _ReviewItemRowState extends State<_ReviewItemRow> {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.read<ComandaController>();
+    final ctrl = context.read<OrderController>();
     final subtotal =
         'R\$ ${widget.item.subtotal.toStringAsFixed(2).replaceAll('.', ',')}';
 

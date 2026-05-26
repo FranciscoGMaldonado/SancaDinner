@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../controllers/comanda_controller.dart';
+import '../controllers/order_controller.dart';
 
-class ComandaCustomerStep extends StatefulWidget {
-  const ComandaCustomerStep({super.key});
+class OrderCustomerStep extends StatefulWidget {
+  const OrderCustomerStep({super.key});
 
   @override
-  State<ComandaCustomerStep> createState() => _ComandaCustomerStepState();
+  State<OrderCustomerStep> createState() => _OrderCustomerStepState();
 }
 
-class _ComandaCustomerStepState extends State<ComandaCustomerStep>
+class _OrderCustomerStepState extends State<OrderCustomerStep>
     with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameCtrl;
@@ -28,7 +28,7 @@ class _ComandaCustomerStepState extends State<ComandaCustomerStep>
   @override
   void initState() {
     super.initState();
-    final ctrl = context.read<ComandaController>();
+    final ctrl = context.read<OrderController>();
     _nameCtrl = TextEditingController(text: ctrl.customerName);
     _tableCtrl = TextEditingController(
         text: ctrl.tableNumber != null ? ctrl.tableNumber.toString() : '');
@@ -50,11 +50,11 @@ class _ComandaCustomerStepState extends State<ComandaCustomerStep>
 
   void _proceed() {
     if (!_formKey.currentState!.validate()) return;
-    final ctrl = context.read<ComandaController>();
+    final ctrl = context.read<OrderController>();
     ctrl.customerName = _nameCtrl.text.trim();
     ctrl.tableNumber = int.tryParse(_tableCtrl.text.trim());
     ctrl.fetchProducts();
-    ctrl.goTo(ComandaStep.addItems);
+    ctrl.goTo(OrderStep.addItems);
   }
 
   @override

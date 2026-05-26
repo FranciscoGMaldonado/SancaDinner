@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../controllers/comanda_controller.dart';
+import '../controllers/order_controller.dart';
 import '../models/product_model.dart';
 
-class ComandaItemsStep extends StatefulWidget {
-  const ComandaItemsStep({super.key});
+class OrderItemsStep extends StatefulWidget {
+  const OrderItemsStep({super.key});
 
   @override
-  State<ComandaItemsStep> createState() => _ComandaItemsStepState();
+  State<OrderItemsStep> createState() => _OrderItemsStepState();
 }
 
-class _ComandaItemsStepState extends State<ComandaItemsStep>
+class _OrderItemsStepState extends State<OrderItemsStep>
     with SingleTickerProviderStateMixin {
   late AnimationController _anim;
   late Animation<double> _fade;
@@ -37,7 +37,7 @@ class _ComandaItemsStepState extends State<ComandaItemsStep>
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.watch<ComandaController>();
+    final ctrl = context.watch<OrderController>();
 
     return FadeTransition(
       opacity: _fade,
@@ -51,7 +51,7 @@ class _ComandaItemsStepState extends State<ComandaItemsStep>
     );
   }
 
-  Widget _buildSearchBar(ComandaController ctrl) {
+  Widget _buildSearchBar(OrderController ctrl) {
     return Container(
       color: _surfaceColor,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -93,7 +93,7 @@ class _ComandaItemsStepState extends State<ComandaItemsStep>
     );
   }
 
-  Widget _buildProductArea(ComandaController ctrl) {
+  Widget _buildProductArea(OrderController ctrl) {
     if (ctrl.loadingProducts) {
       return const Center(
         child: Column(
@@ -149,7 +149,7 @@ class _ComandaItemsStepState extends State<ComandaItemsStep>
     );
   }
 
-  Widget _buildBottomBar(ComandaController ctrl) {
+  Widget _buildBottomBar(OrderController ctrl) {
     return Container(
       decoration: BoxDecoration(
         color: _surfaceColor,
@@ -177,7 +177,7 @@ class _ComandaItemsStepState extends State<ComandaItemsStep>
           SizedBox(
             height: 46,
             child: ElevatedButton(
-              onPressed: () => ctrl.goTo(ComandaStep.review),
+              onPressed: () => ctrl.goTo(OrderStep.review),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _accentColor,
                 foregroundColor: Colors.white,
@@ -214,7 +214,7 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.watch<ComandaController>();
+    final ctrl = context.watch<OrderController>();
     final qty = ctrl.quantityOf(product.id);
     final inCart = qty > 0;
 
@@ -303,7 +303,7 @@ class _QuantityControl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrl = context.read<ComandaController>();
+    final ctrl = context.read<OrderController>();
 
     if (qty == 0) {
       return GestureDetector(
