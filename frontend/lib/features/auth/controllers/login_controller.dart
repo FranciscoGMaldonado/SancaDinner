@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class LoginController extends ChangeNotifier {
-  static const String _baseUrl = 'http://localhost:8080/api/auth';
+  static const String _baseUrl = 'http://host.docker.internal:8080/api/auth';
 
   bool _isLoading = false;
   String? _errorMessage;
