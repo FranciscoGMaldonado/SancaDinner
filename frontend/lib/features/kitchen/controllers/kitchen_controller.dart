@@ -91,7 +91,7 @@ class KitchenController extends ChangeNotifier {
   // ── Progress item ─────────────────────────────────────
   // POST /api/orders/order_items/progress
   // Body: { orderId, orderItemId }
-  final Set<int> _updatingItems = {};
+  final List<int> _updatingItems = [];
   bool isUpdating(int itemId) => _updatingItems.contains(itemId);
 
   Future<void> progressItem(int orderId, int itemId) async {
@@ -115,6 +115,11 @@ class KitchenController extends ChangeNotifier {
           final next = item.status.next;
           if (next != null) {
             _orders[idx] = _orders[idx].withUpdatedItem(itemId, next);
+          }
+          // Auto-encerra se todos os itens foram entregues/cancelados
+          if (_orders[idx].allDelivered) {
+            await closeOrder(orderId);
+            return;
           }
         }
       }
@@ -146,11 +151,48 @@ class KitchenController extends ChangeNotifier {
         if (idx >= 0) {
           _orders[idx] =
               _orders[idx].withUpdatedItem(itemId, OrderItemStatus.canceled);
+          // Auto-encerra se todos os itens foram entregues/cancelados
+          if (_orders[idx].allDelivered) {
+            await closeOrder(orderId);
+            return;
+          }
         }
       }
     } catch (_) {}
 
     _updatingItems.remove(itemId);
+    notifyListeners();
+  }
+
+  // ── Close order ───────────────────────────────────────
+  // POST /api/orders/close
+  // Body: { orderId, review }
+  final List<int> _closingOrders = [];
+  bool isClosing(int orderId) => _closingOrders.contains(orderId);
+
+  Future<void> closeOrder(int orderId) async {
+    _closingOrders.add(orderId);
+    notifyListeners();
+
+    try {
+      final res = await http.post(
+        Uri.parse('$_baseUrl/orders/close'),
+        headers: _headers,
+        body: jsonEncode({
+          'orderId': orderId,
+          'review': '',
+        }),
+      ).timeout(const Duration(seconds: 8));
+
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        // Remove o pedido da lista local imediatamente
+        _orders.removeWhere((o) => o.id == orderId);
+      }
+    } catch (_) {}
+
+    _closingOrders.remove(orderId);
+    // Limpa itens sendo atualizados desse pedido
+    _updatingItems.clear();
     notifyListeners();
   }
 }

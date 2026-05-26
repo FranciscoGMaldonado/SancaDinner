@@ -29,7 +29,7 @@ class KitchenOrderCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildHeader(),
+          _buildHeader(context),
           const Divider(height: 1, color: _borderColor),
           ...order.items.map((item) => _ItemRow(orderId: order.id, item: item)),
         ],
@@ -37,7 +37,10 @@ class KitchenOrderCard extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final ctrl = context.watch<KitchenController>();
+    final closing = ctrl.isClosing(order.id);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
@@ -89,6 +92,73 @@ class KitchenOrderCard extends StatelessWidget {
           ),
           // Progresso
           _ProgressBadge(order: order),
+          const SizedBox(width: 8),
+          // Botão encerrar manual
+          if (closing)
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                  strokeWidth: 2, color: Color(0xFF4CAF50)),
+            )
+          else
+            GestureDetector(
+              onTap: () => _confirmClose(context, ctrl),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4CAF50).withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(
+                      color: const Color(0xFF4CAF50).withOpacity(0.4)),
+                ),
+                child: const Text(
+                  'Encerrar',
+                  style: TextStyle(
+                    color: Color(0xFF4CAF50),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmClose(BuildContext context, KitchenController ctrl) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: const Color(0xFF1A1714),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Color(0xFF2E2A25)),
+        ),
+        title: const Text(
+          'Encerrar pedido?',
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        content: Text(
+          'Deseja encerrar o pedido #${order.id} de ${order.customerName}?',
+          style: const TextStyle(color: Color(0xFF7A7570), fontSize: 14),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar',
+                style: TextStyle(color: Color(0xFF7A7570))),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ctrl.closeOrder(order.id);
+            },
+            child: const Text('Encerrar',
+                style: TextStyle(color: Color(0xFF4CAF50))),
+          ),
         ],
       ),
     );

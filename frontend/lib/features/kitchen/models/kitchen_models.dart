@@ -114,6 +114,12 @@ class KitchenOrder {
   int get pendingCount =>
       items.where((i) => i.status == OrderItemStatus.pending).length;
 
+  bool get allDelivered =>
+      items.isNotEmpty &&
+      items.every((i) =>
+          i.status == OrderItemStatus.delivered ||
+          i.status == OrderItemStatus.canceled);
+
   bool get allReady =>
       items.isNotEmpty &&
       items.every((i) =>
