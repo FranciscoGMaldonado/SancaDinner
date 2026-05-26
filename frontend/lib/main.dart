@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/controllers/login_controller.dart';
 import 'features/auth/screens/login_screen.dart';
-import 'features/service/controllers/comanda_controller.dart';
-import 'features/service/screens/comanda_screen.dart';
+import 'features/service/controllers/order_controller.dart';
+import 'features/service/screens/order_screen.dart';
 import 'features/kitchen/controllers/kitchen_controller.dart';
 import 'features/kitchen/screens/kitchen_screen.dart';
 
@@ -45,8 +45,8 @@ class _RootRouter extends StatelessWidget {
     switch (login.userRole) {
       case 'SERVICE':
         return ChangeNotifierProvider(
-          create: (_) => ComandaController(token: login.token!),
-          child: const ComandaScreen(),
+          create: (_) => OrderController(token: login.token!),
+          child: const OrderScreen(),
         );
       case 'KITCHEN':
         return ChangeNotifierProvider(
