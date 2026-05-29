@@ -1,4 +1,4 @@
-package com.ifsp.edu.sanca_dinner.controller.user;
+package com.ifsp.edu.sanca_dinner.application.user.mapper;
 
 import com.ifsp.edu.sanca_dinner.controller.user.request.RegisterRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.response.AuthResponse;
