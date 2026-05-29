@@ -57,13 +57,9 @@ class LoginController extends ChangeNotifier {
         _userRole = data['role'] as String?;
         _setLoading(false);
         return true;
-      } else if (response.statusCode == 401) {
-        _setError('Email ou senha inválidos.');
-        _setLoading(false);
-        return false;
       } else {
         final body = jsonDecode(response.body) as Map<String, dynamic>;
-        _setError(body['error'] as String? ?? 'Erro desconhecido.');
+        _setError(body['message'] as String? ?? 'Erro desconhecido.');
         _setLoading(false);
         return false;
       }
