@@ -28,6 +28,5 @@ CREATE TABLE order_items (
     product_price NUMERIC(10,2) NOT NULL,
     specification TEXT,
     status        TEXT      NOT NULL,
-    FOREIGN KEY (order_id)   REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+    FOREIGN KEY (order_id)   REFERENCES orders(id)
 );

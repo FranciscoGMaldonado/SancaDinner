@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../shared/widgets/logout_button.dart';
 import '../controllers/kitchen_controller.dart';
 import '../models/kitchen_models.dart';
 import 'kitchen_order_card.dart';
@@ -21,6 +23,7 @@ class _KitchenScreenState extends State<KitchenScreen> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<KitchenController>().startPolling();
     });
@@ -41,9 +44,13 @@ class _KitchenScreenState extends State<KitchenScreen> {
     return AppBar(
       backgroundColor: _surfaceColor,
       elevation: 0,
+      centerTitle: false,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(height: 1, color: _borderColor),
+        child: Container(
+          height: 1,
+          color: _borderColor,
+        ),
       ),
       leading: Padding(
         padding: const EdgeInsets.only(left: 16),
@@ -54,18 +61,37 @@ class _KitchenScreenState extends State<KitchenScreen> {
             color: _accentColor,
             borderRadius: BorderRadius.circular(6),
           ),
-          child: const Icon(Icons.dinner_dining, color: Colors.white, size: 16),
+          child: const Icon(
+            Icons.dinner_dining,
+            color: Colors.white,
+            size: 16,
+          ),
         ),
       ),
       leadingWidth: 52,
-      title: const Text(
-        'Cozinha',
-        style: TextStyle(
-          fontFamily: 'Georgia',
-          fontSize: 18,
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-        ),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Painel da Cozinha',
+            style: TextStyle(
+              fontSize: 11,
+              color: _textMuted,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.3,
+            ),
+          ),
+          const Text(
+            'Pedidos',
+            style: TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 18,
+              color: Colors.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
       ),
       actions: [
         if (ctrl.lastUpdated != null)
@@ -74,22 +100,35 @@ class _KitchenScreenState extends State<KitchenScreen> {
             child: Center(
               child: Text(
                 'Atualizado às ${_formatTime(ctrl.lastUpdated!)}',
-                style: const TextStyle(color: _textMuted, fontSize: 12),
+                style: const TextStyle(
+                  color: _textMuted,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
+
         IconButton(
+          tooltip: 'Atualizar',
+          onPressed: ctrl.loading ? null : ctrl.fetchOrders,
           icon: ctrl.loading
               ? const SizedBox(
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
-                      strokeWidth: 2, color: _accentColor),
+                    strokeWidth: 2,
+                    color: _accentColor,
+                  ),
                 )
-              : const Icon(Icons.refresh_rounded, color: _textMuted, size: 20),
-          onPressed: ctrl.loading ? null : ctrl.fetchOrders,
-          tooltip: 'Atualizar',
+              : const Icon(
+                  Icons.refresh_rounded,
+                  color: _textMuted,
+                  size: 20,
+                ),
         ),
+
+        const LogoutButton(),
+
         const SizedBox(width: 8),
       ],
     );
@@ -101,10 +140,18 @@ class _KitchenScreenState extends State<KitchenScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: _accentColor, strokeWidth: 2),
+            CircularProgressIndicator(
+              color: _accentColor,
+              strokeWidth: 2,
+            ),
             SizedBox(height: 16),
-            Text('Carregando pedidos…',
-                style: TextStyle(color: _textMuted, fontSize: 14)),
+            Text(
+              'Carregando pedidos…',
+              style: TextStyle(
+                color: _textMuted,
+                fontSize: 14,
+              ),
+            ),
           ],
         ),
       );
@@ -115,15 +162,26 @@ class _KitchenScreenState extends State<KitchenScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.wifi_off_rounded, color: _textMuted, size: 40),
+            const Icon(
+              Icons.wifi_off_rounded,
+              color: _textMuted,
+              size: 40,
+            ),
             const SizedBox(height: 16),
-            Text(ctrl.error!,
-                style: const TextStyle(color: _textMuted, fontSize: 14)),
+            Text(
+              ctrl.error!,
+              style: const TextStyle(
+                color: _textMuted,
+                fontSize: 14,
+              ),
+            ),
             const SizedBox(height: 20),
             TextButton(
               onPressed: ctrl.fetchOrders,
-              child: const Text('Tentar novamente',
-                  style: TextStyle(color: _accentColor)),
+              child: const Text(
+                'Tentar novamente',
+                style: TextStyle(color: _accentColor),
+              ),
             ),
           ],
         ),
@@ -137,15 +195,18 @@ class _KitchenScreenState extends State<KitchenScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Coluna: Em preparo (tem itens pendentes)
         _KanbanColumn(
           title: 'Em preparo',
           count: ctrl.pendingOrders.length,
           color: const Color(0xFFE8A020),
           orders: ctrl.pendingOrders,
         ),
-        Container(width: 1, color: _borderColor),
-        // Coluna: Prontos (todos os itens finalizados)
+
+        Container(
+          width: 1,
+          color: _borderColor,
+        ),
+
         _KanbanColumn(
           title: 'Pronto para entregar',
           count: ctrl.readyOrders.length,
@@ -169,8 +230,11 @@ class _KitchenScreenState extends State<KitchenScreen> {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: _borderColor),
             ),
-            child: const Icon(Icons.check_circle_outline_rounded,
-                color: Color(0xFF4CAF50), size: 32),
+            child: const Icon(
+              Icons.check_circle_outline_rounded,
+              color: Color(0xFF4CAF50),
+              size: 32,
+            ),
           ),
           const SizedBox(height: 20),
           const Text(
@@ -185,15 +249,20 @@ class _KitchenScreenState extends State<KitchenScreen> {
           const Text(
             'Os pedidos enviados pelo atendimento\naparecerão aqui automaticamente.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: _textMuted, fontSize: 14, height: 1.6),
+            style: TextStyle(
+              color: _textMuted,
+              fontSize: 14,
+              height: 1.6,
+            ),
           ),
         ],
       ),
     );
   }
 
-  String _formatTime(DateTime dt) =>
-      '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+  String _formatTime(DateTime dt) {
+    return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
+  }
 }
 
 // ── Kanban Column ───────────────────────────────────────────────────────────
@@ -211,7 +280,6 @@ class _KanbanColumn extends StatelessWidget {
     required this.orders,
   });
 
-  static const _bgColor = Color(0xFF0F0D0A);
   static const _surfaceColor = Color(0xFF1A1714);
   static const _borderColor = Color(0xFF2E2A25);
   static const _textMuted = Color(0xFF7A7570);
@@ -221,11 +289,12 @@ class _KanbanColumn extends StatelessWidget {
     return Expanded(
       child: Column(
         children: [
-          // Header da coluna
           Container(
             color: _surfaceColor,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 14,
+            ),
             child: Row(
               children: [
                 Container(
@@ -236,7 +305,9 @@ class _KanbanColumn extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                 ),
+
                 const SizedBox(width: 10),
+
                 Text(
                   title,
                   style: const TextStyle(
@@ -245,10 +316,14 @@ class _KanbanColumn extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
+
                 const Spacer(),
+
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(10),
@@ -256,32 +331,43 @@ class _KanbanColumn extends StatelessWidget {
                   child: Text(
                     '$count',
                     style: TextStyle(
-                        color: color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700),
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          Container(height: 1, color: _borderColor),
-          // Cards
+
+          Container(
+            height: 1,
+            color: _borderColor,
+          ),
+
           Expanded(
             child: orders.isEmpty
                 ? Center(
                     child: Text(
                       'Nenhum pedido aqui',
-                      style:
-                          TextStyle(color: _textMuted, fontSize: 13),
+                      style: TextStyle(
+                        color: _textMuted,
+                        fontSize: 13,
+                      ),
                     ),
                   )
                 : ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: orders.length,
-                    itemBuilder: (_, i) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: KitchenOrderCard(order: orders[i]),
-                    ),
+                    itemBuilder: (_, i) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: KitchenOrderCard(
+                          order: orders[i],
+                        ),
+                      );
+                    },
                   ),
           ),
         ],

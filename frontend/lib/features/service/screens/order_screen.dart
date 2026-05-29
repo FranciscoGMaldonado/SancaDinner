@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../shared/widgets/logout_button.dart';
 import '../controllers/order_controller.dart';
 import 'order_customer_step.dart';
 import 'order_items_step.dart';
@@ -35,8 +37,10 @@ class OrderScreen extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context, OrderController ctrl) {
-    // Determina se há navegação para trás possível
+  PreferredSizeWidget _buildAppBar(
+    BuildContext context,
+    OrderController ctrl,
+  ) {
     final canGoBack = ctrl.step != OrderStep.customerInfo;
 
     return AppBar(
@@ -44,12 +48,18 @@ class OrderScreen extends StatelessWidget {
       elevation: 0,
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1),
-        child: Container(height: 1, color: _borderColor),
+        child: Container(
+          height: 1,
+          color: _borderColor,
+        ),
       ),
       leading: canGoBack
           ? IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 18),
+              icon: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.white,
+                size: 18,
+              ),
               onPressed: () {
                 if (ctrl.step == OrderStep.addItems) {
                   ctrl.goTo(OrderStep.customerInfo);
@@ -69,8 +79,11 @@ class OrderScreen extends StatelessWidget {
                       color: _accentColor,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Icon(Icons.dinner_dining,
-                        color: Colors.white, size: 16),
+                    child: const Icon(
+                      Icons.dinner_dining,
+                      color: Colors.white,
+                      size: 16,
+                    ),
                   ),
                 ],
               ),
@@ -88,9 +101,16 @@ class OrderScreen extends StatelessWidget {
       actions: [
         if (ctrl.totalItems > 0 && ctrl.step == OrderStep.addItems)
           Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: _CartBadge(count: ctrl.totalItems, total: ctrl.formattedTotal),
+            padding: const EdgeInsets.only(right: 8),
+            child: _CartBadge(
+              count: ctrl.totalItems,
+              total: ctrl.formattedTotal,
+            ),
           ),
+
+        const LogoutButton(),
+
+        const SizedBox(width: 8),
       ],
     );
   }
@@ -99,8 +119,10 @@ class OrderScreen extends StatelessWidget {
     switch (ctrl.step) {
       case OrderStep.customerInfo:
         return const OrderCustomerStep();
+
       case OrderStep.addItems:
         return const OrderItemsStep();
+
       case OrderStep.review:
         return const OrderReviewStep();
     }
@@ -111,7 +133,10 @@ class OrderScreen extends StatelessWidget {
 
 class _StepIndicator extends StatelessWidget {
   final OrderStep current;
-  const _StepIndicator({required this.current});
+
+  const _StepIndicator({
+    required this.current,
+  });
 
   static const _accentColor = Color(0xFFD4552A);
   static const _borderColor = Color(0xFF2E2A25);
@@ -122,6 +147,7 @@ class _StepIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const labels = ['Cliente', 'Itens', 'Revisão'];
+
     return Container(
       color: _surfaceColor,
       padding: const EdgeInsets.symmetric(vertical: 14),
@@ -132,14 +158,16 @@ class _StepIndicator extends StatelessWidget {
             children: List.generate(3, (i) {
               final done = i < _currentIndex;
               final active = i == _currentIndex;
+
               return Expanded(
                 child: Row(
                   children: [
                     _StepDot(
-                        index: i + 1,
-                        done: done,
-                        active: active,
-                        label: labels[i]),
+                      index: i + 1,
+                      done: done,
+                      active: active,
+                      label: labels[i],
+                    ),
                     if (i < 2)
                       Expanded(
                         child: Container(
@@ -194,7 +222,11 @@ class _StepDot extends StatelessWidget {
           ),
           child: Center(
             child: done
-                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                ? const Icon(
+                    Icons.check,
+                    size: 14,
+                    color: Colors.white,
+                  )
                 : Text(
                     '$index',
                     style: TextStyle(
@@ -224,23 +256,36 @@ class _StepDot extends StatelessWidget {
 class _CartBadge extends StatelessWidget {
   final int count;
   final String total;
-  const _CartBadge({required this.count, required this.total});
+
+  const _CartBadge({
+    required this.count,
+    required this.total,
+  });
 
   static const _accentColor = Color(0xFFD4552A);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 6,
+      ),
       decoration: BoxDecoration(
         color: _accentColor.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: _accentColor.withOpacity(0.4)),
+        border: Border.all(
+          color: _accentColor.withOpacity(0.4),
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.receipt_long_outlined, size: 14, color: _accentColor),
+          const Icon(
+            Icons.receipt_long_outlined,
+            size: 14,
+            color: _accentColor,
+          ),
           const SizedBox(width: 6),
           Text(
             '$count  ·  $total',
