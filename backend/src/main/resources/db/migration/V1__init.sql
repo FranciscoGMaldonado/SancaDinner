@@ -29,5 +29,4 @@ CREATE TABLE order_items (
     specification TEXT,
     status        TEXT      NOT NULL,
     FOREIGN KEY (order_id)   REFERENCES orders(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
 );
