@@ -2,56 +2,28 @@
 
 Projeto desenvolvido para a disciplina de Tópicos em Computação, exercida no Instituto Federal de Educação, Ciência e Tecnologia de São Paulo, Campus São Carlos (IFSP-SCL), lecionada pelo professor Rodrigo Ellias Bianchi.
 
-## Subindo Os Serviços
+## Subindo a Aplicação
 
-Para subir os containers referentes ao projeto, é necessário realizar os seguintes passos:
-
-### Builds
-
-- Primeiro, realize os builds da aplicação. Na raiz do repositório, rode:
+Para subir os containers referentes ao projeto, basta rodar o comando:
 
 ```bash
-docker build -t backend ./backend/.
-docker build -t frontend ./frontend/.
+docker compose up --build -d
 ```
 
-### Backend
+## Usuários
 
-- Para rodar os serviços de Backend, deve-se criar um arquivo `.env` no diretório do `backend` com as variáveis usadas pelos serviços. 
-  - Possuímos o [.env.example](.env.example) com valores mock para serem usados localmente.
-  - Para o valor `JWT_SECRET`, será necessário criar um valor em `Base64` de pelo menos 32 caracteres. Pode ser feito pelo terminal usando:
-    - Windows: `[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))`.
-    - Linux/Mac: `openssl rand -base64 32`.
+Para logar na plataforma, criamos alguns usuários mock referentes a cada _role_:
 
-- Para iniciá-los, rode o comando:
-
-```bash
-docker compose up -d
-```
-
-### Frontend
-
-- Primeiro, deve rodar esse comando no diretório do `frontend`:
-
-```bash
-flutter pub get
-```
-
-- Depois, use esse comando para criar o container do Frontend:
-
-```bash
-docker run -it --rm --name frontend -p 3000:3000 -v ./frontend:/app -v /app/.dart_tool frontend bash
-```
-
-- Para iniciar o servidor web, rode dentro do container:
-
-```bash
-flutter run -d web-server --web-port=3000
-```
+| Email                 | Senha          | Role    |
+|-----------------------|----------------|---------|
+| admin@gmail.com       | admin123       | ADMIN   |
+| atendimento@gmail.com | atendimento123 | SERVICE |
+| cozinha@gmail.com     | cozinha123     | KITCHEN |
 
 ## Postgres
 
-Para acessar o banco da aplicação, deve estar com o container do banco criado, como foi explicado anteriormente. Usando os valores definidos no arquivo `.env` no comando, rode:
+Para acessar o banco da aplicação, caso queira verificar os dados registrados, basta rodar o comando:
+
 ```bash
 docker exec -it postgres psql -U user -d sancadinner
 ```
