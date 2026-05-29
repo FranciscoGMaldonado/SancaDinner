@@ -5,6 +5,7 @@ import com.ifsp.edu.sanca_dinner.domain.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,6 +22,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) { return jpaRepository.findByEmail(email); }
+
+    @Override
+    public List<User> findAll() { return jpaRepository.findAll(); }
 
     @Override
     public boolean existsByEmail(String email) { return jpaRepository.existsByEmail(email); }
