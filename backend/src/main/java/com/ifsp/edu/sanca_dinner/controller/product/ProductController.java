@@ -7,6 +7,7 @@ import com.ifsp.edu.sanca_dinner.controller.product.response.ProductResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ProductController {
     private UpdateProductUseCase updateProductUseCase;
     private DeleteProductUseCase deleteProductUseCase;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ProductResponse> create(@RequestBody CreateProductRequest request){
         return  ResponseEntity.status(HttpStatus.CREATED).body(createProductUseCase.execute(request));
@@ -38,11 +40,13 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(getProductByIdUseCase.execute(productId));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(updateProductUseCase.execute(request));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Integer productId){
         deleteProductUseCase.execute(productId);
