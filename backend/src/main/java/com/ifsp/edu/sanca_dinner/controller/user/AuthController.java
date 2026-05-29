@@ -1,5 +1,6 @@
 package com.ifsp.edu.sanca_dinner.controller.user;
 
+import com.ifsp.edu.sanca_dinner.application.user.use_cases.RegisterUserUseCase;
 import com.ifsp.edu.sanca_dinner.controller.user.response.AuthResponse;
 import com.ifsp.edu.sanca_dinner.controller.user.request.LoginRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.request.RegisterRequest;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private RegisterUserUseCase registerUserUseCase;
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+        return ResponseEntity.ok(registerUserUseCase.execute(request));
     }
 
     @PostMapping("/login")
