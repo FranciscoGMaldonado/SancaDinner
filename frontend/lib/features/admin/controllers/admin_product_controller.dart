@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/admin_models.dart';
 
 class AdminProductController extends ChangeNotifier {
-  static const String _baseUrl = 'http://host.docker.internal:8080/api/products';
+  static const String _baseUrl = 'http://localhost:8080/api/products';
 
   final String token;
   AdminProductController({required this.token});

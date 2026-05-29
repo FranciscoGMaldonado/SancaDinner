@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/kitchen_models.dart';
 
 class KitchenController extends ChangeNotifier {
-  static const String _baseUrl = 'http://host.docker.internal:8080/api';
+  static const String _baseUrl = 'http://localhost:8080/api';
   static const Duration _pollInterval = Duration(seconds: 15);
 
   final String token;

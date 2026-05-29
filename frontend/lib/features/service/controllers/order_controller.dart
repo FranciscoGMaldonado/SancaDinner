@@ -7,7 +7,7 @@ import '../models/order_item_draft.dart';
 enum OrderStep { customerInfo, addItems, review }
 
 class OrderController extends ChangeNotifier {
-  static const String _baseUrl = 'http://host.docker.internal:8080/api';
+  static const String _baseUrl = 'http://localhost:8080/api';
 
   final String token;
   OrderController({required this.token});

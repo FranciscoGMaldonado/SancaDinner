@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/admin_models.dart';
 
 class AdminUserController extends ChangeNotifier {
-  static const String _baseUrl = 'http://host.docker.internal:8080/api';
+  static const String _baseUrl = 'http://localhost:8080/api';
 
   final String token;
   AdminUserController({required this.token});
