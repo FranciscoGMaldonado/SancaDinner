@@ -1,8 +1,9 @@
-package com.ifsp.edu.sanca_dinner.controller.user;
+package com.ifsp.edu.sanca_dinner.application.user.mapper;
 
 import com.ifsp.edu.sanca_dinner.controller.user.request.RegisterRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.response.AuthResponse;
 import com.ifsp.edu.sanca_dinner.controller.user.response.RegisterResponse;
+import com.ifsp.edu.sanca_dinner.controller.user.response.UserResponse;
 import com.ifsp.edu.sanca_dinner.domain.model.user.User;
 import com.ifsp.edu.sanca_dinner.domain.model.user.UserRoles;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,10 @@ public class UserMapper {
     public User toEntity(RegisterRequest request, String encodedPassword) {
         UserRoles role = UserRoles.valueOf(request.role().toUpperCase());
         return new User(request.name(), request.email(), encodedPassword, role);
+    }
+
+    public UserResponse userToResponse(User user){
+        return new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole());
     }
 
     public RegisterResponse registerToResponse() {
