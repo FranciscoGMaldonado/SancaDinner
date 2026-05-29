@@ -1,6 +1,6 @@
 package com.ifsp.edu.sanca_dinner.domain.service.auth;
 
-import com.ifsp.edu.sanca_dinner.controller.user.UserMapper;
+import com.ifsp.edu.sanca_dinner.application.user.mapper.UserMapper;
 import com.ifsp.edu.sanca_dinner.controller.user.request.LoginRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.request.RegisterRequest;
 import com.ifsp.edu.sanca_dinner.controller.user.response.AuthResponse;
@@ -11,6 +11,8 @@ import com.ifsp.edu.sanca_dinner.domain.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,9 @@ public class AuthService {
 
         String token = jwtService.generateToken(user.getEmail(), user.getRole().name());
         return userMapper.authToResponse(user, token);
+    }
+
+    public List<User> findAllUsers(){
+        return userRepository.findAll();
     }
 }
