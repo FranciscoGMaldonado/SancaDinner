@@ -6,6 +6,7 @@ import 'features/service/controllers/order_controller.dart';
 import 'features/service/screens/order_screen.dart';
 import 'features/kitchen/controllers/kitchen_controller.dart';
 import 'features/kitchen/screens/kitchen_screen.dart';
+import 'features/admin/screens/admin_screen.dart';
 
 void main() {
   runApp(const SancaDinnerApp());
@@ -53,6 +54,11 @@ class _RootRouter extends StatelessWidget {
           create: (_) => KitchenController(token: login.token!),
           child: const KitchenScreen(),
         );
+      case 'ADMIN':
+        return Provider<String>.value(
+          value: login.token!,
+          child: const AdminScreen(),
+        );
       default:
         return _PlaceholderScreen(role: login.userRole ?? 'UNKNOWN');
     }
@@ -76,7 +82,8 @@ class _PlaceholderScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.construction_outlined, color: _textMuted, size: 48),
+            const Icon(Icons.construction_outlined,
+                color: _textMuted, size: 48),
             const SizedBox(height: 20),
             const Text(
               'Em construção',
@@ -95,7 +102,8 @@ class _PlaceholderScreen extends StatelessWidget {
             const SizedBox(height: 32),
             TextButton(
               onPressed: login.logout,
-              child: const Text('Sair', style: TextStyle(color: _accentColor)),
+              child: const Text('Sair',
+                  style: TextStyle(color: _accentColor)),
             ),
           ],
         ),
